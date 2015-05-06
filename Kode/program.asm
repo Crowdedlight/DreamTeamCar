@@ -11,15 +11,17 @@
 
 .org 0
 	jmp	Reset
-	
 
+.org 0x14
+	jmp	Speed_Measure
 
-.org 0x30
+.org 0x2A
 Reset:
+	ldi	R19, 0x00	;Clear speed mesure bits
+	ldi	R20, 0x00	;Clear speed mesure bits
+	ldi	R21, 0x00	;Clear speed mesure bits
+	ldi	R22, 0x00	;Clear speed mesure bits
 
-	ldi	R20, 0x00	;TEST
-	ldi	R21, 0x0F	;TEST
-	ldi	R22, 0xFF	;TEST
 
 	ldi	R23, 0x00	;Målt hastighed.
 
@@ -57,7 +59,7 @@ PORTD_Init:
 
 ADC_Init:
 	ldi	R16, 0b11100111
-	out	ADCSR, R16	
+	out	ADCSR, R16
 
 PWM_Init:
 	sbi	DDRD, 7
@@ -72,10 +74,11 @@ USART_Init:
 	ldi	R16, 103	;UBRRL bruges til at sætte baudrate.
 	out 	UBRRL, R16
 
+
 	ldi 	R16, 0b00100000	;
 	out 	UCSRA, R16
-				
-	ldi 	R16, 0b11111000	;
+
+	ldi 	R16, (1<<RXEN) | (1<<TXEN)
 	out 	UCSRB, R16
 
 	ldi 	r16, 0b10001110	;
@@ -87,9 +90,17 @@ Stack_init:
 	ldi	R16, LOW(RAMEND)
 	out	SPL, R16
 
-Timer_init0:
-	ldi	R16, 0b00000101
+Timer_init0:			; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 ticks
+	ldi	R16, 0x9B	; 155 + 1 ticks
+	out	OCR0, R16
+
+	ldi	R16, 0b00001101	; 1024 Prescale Og CTC mode
 	out	TCCR0, R16
+
+Timer_Interrupt0:
+	ldi	R16, 0b00000000
+	out 	TIMSK, R16
+	sei
 
 Timer_init1:
 	ldi	R16, 0b00000000
@@ -106,28 +117,25 @@ Timer_init1:
 ;*       Main       *
 ;********************
 ;********************
-Main:				;Main loop.		
+Main:				;Main loop.
 	sbic 	UCSRA, RXC	;Tjek om der er modtaget seriel data.
 	call	USART_Receive
-			
+
 	out	OCR2, R25	;Hastigheden sættes til værdien i R25.
-		
-	sbic	PINA, 1		;Tjek om den hvidelinje bliver detekteret.	
+
+	sbic	PINA, 1		;Tjek om den hvidelinje bliver detekteret.
 	call	LapCounter
-		
-	sbrc	R28, 0		;Tjek om der er data som skal sendes over seriel.		
+
+	sbrc	R28, 0		;Tjek om der er data som skal sendes over seriel.
 	call	USART_Transmit
-		
+
 	sbrc	R28, 1		;Tjek om der er banedata som skal sendes over seriel.
-	call	Transmit_Length		
+	call	Transmit_Length
 
 	sbrc	R28, 2		;Tjek om tælleren skal nulstilles.
-	call	Clear_Counter		
-	
-	;sbrc	R28, 3		;Tjek om hastigheden skal måles.
-	;call	Speed_Measure
+	call	Clear_Counter
 
-	call	Read_Acc	;Læs accelerometeret og send værdien over seriel.
+	;call	Read_Acc	;Læs accelerometeret og send værdien over seriel.
 
 jmp	Main			;Slutningen af mainloop.
 
@@ -180,7 +188,29 @@ Clear_Counter:
 ;*  Speed Measure   *
 ;********************
 Speed_Measure:
-	ret
+
+	in	R18, TCNT1H	;WheelSpeed MSB
+	in	R17, TCNT1L	;WheelSpeed LSB
+
+
+	mov	R22, R18	;Flyt læste værdier til at gemmes for næste udregning
+	mov	R21, R17
+
+	sub	R17, R19	;Substrat LSB
+	sbc	R18, R20	;Substrat MSB med Carry
+
+				;Hvis negativt flag er sat er udregningen forkert
+	;brmi	Error_Calculation
+
+	mov	R20, R22	;Flyt de gemte værdier tilbage til korrekt register for næste udregning
+	mov	R19, R21
+
+	mov	R23, R17	;Flyt pulses/10 ms til Speed register.
+
+	reti
+
+Error_Calculation:
+	reti
 
 ;********************
 ;*     Read Acc     *
@@ -189,7 +219,7 @@ Read_Acc:
 	ldi	R16, 0b00100010	;ADC2 vælges
 	out	ADMUX, R16
 
-	sbis	ADCSR, ADIF	;Venter på at ADC'en er klar. 
+	sbis	ADCSR, ADIF	;Venter på at ADC'en er klar.
 	rjmp	Read_Acc
 	sbi	ADCSR, ADIF	;ADIF flag ryddes.
 	in	R31, ADCL	;ADC læses, ADCL bruges ikke.
@@ -197,7 +227,7 @@ Read_Acc:
 
 	ldi	R29, 0xBB	;Seriel data gøres klar. Reply
 	ldi	R30, 0x15	;Seriel data gøres klar. Acc
-	
+
 	call	USART_Transmit
 	ret
 
@@ -265,7 +295,7 @@ Type_Get:
 Type_Set_Start:
 	mov 	R25, R31
 	ldi	R29, 0xBB
-	ldi	R30, 0x10 
+	ldi	R30, 0x10
 	sbr	R28, 0b00000001
 	ret
 
@@ -276,7 +306,7 @@ Type_Set_Stop:
 	ldi 	R25, 0x00
 	ldi	R29, 0xBB
 	ldi	R30, 0x11
-	ldi	R31, 0x00 
+	ldi	R31, 0x00
 	sbr	R28, 0b00000001
 	ret
 
