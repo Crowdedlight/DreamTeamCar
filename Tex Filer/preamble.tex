@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper,fleqn]{article} %Rapport, standard 11pt, A4
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}			%Muliggør æ,ø,å
+\usepackage{lmodern}				%Skrifttype
+\usepackage[danish]{babel}			%Styrer orddeling
+\usepackage{graphicx}				%Billeder
+\usepackage{epstopdf}				%Implementerer vectorgrafik
+\usepackage{todonotes}				%Todo-kommentaterer
+\usepackage{float}					%Håndterer floats
+\usepackage{tabularx}				%Udvidede muligheder for tabeller
+\usepackage{appendix}                
+\usepackage{subcaption}				%Giver mulighed for subcaptions i billeder
+\usepackage{wrapfig}				%For indsættelse af figur
+\usepackage{blindtext}				%For indsættelse af blindtext
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{placeins} %til float barrier								%Ændrer marginer
+\usepackage[top=3cm, bottom=3cm, left=3.5cm, right=3.0cm]{geometry}
+\usepackage{setspace}				%For ændring af linjeafstand
+\usepackage{icomma}					%Fjerner mellemrum efter komma
+\usepackage{pdfpages}
+
+
+% =====================================================================
+%====== Setting up author information==================================
+%======================================================================
+
+\title{\title}
+\author{}
+\date{}
+
+\newcommand{\forfattere}{Sebastian Bailey Hass, Morten Pedersen \& Frederik Mazur Andersen}
+\newcommand{\titel}{Undersøgelse af Dynamiske Systemer}
+\newcommand{\korttitel}{Dynamiske Systemer}
+\newcommand{\afldato}{21. Oktober 2014}
+\newcommand{\fag}{Fysik}
+\newcommand{\klasse}{GSR-1}
+
+
+% =====================================================================
+%====== Setting up Fancy Headers ======================================
+%======================================================================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markright{\thesection. \ #1}}
+\lhead{\korttitel}
+\chead{}
+\rhead{\rightmark}
+\lfoot{\forfattere}
+\cfoot{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+% øg tekst højden med 2 cm på alle sider
+\addtolength\textheight{2cm}
+\addtolength\topmargin{-1cm}
+\addtolength\marginparwidth{1.5cm}
+\addtolength\headheight{1.6pt}
+
+\makeindex
+
+
+
+\definecolor{sdu_grey}{RGB}{140,140,140}
+\definecolor{sdu_blue}{RGB}{0,71,133}
+
+% =====================================================================
+%====== Setting up layout for chapters and force newpage ==============
+%======================================================================									
+\usepackage{titlesec}
+
+\newcommand{\chapterbreak}{\clearpage}
+
+\titleformat{\chapter}[display]	
+	{\onehalfspacing \bfseries\Huge}
+	{\filleft \color{sdu_grey} \LARGE Kapitel \thechapter}
+	{1ex}
+	{\titlerule
+	\vspace{1ex}%
+	\filright}
+	[\vspace{1ex}%
+	\titlerule]
+
+
+\usepackage{hyperref}				%Til links
+\usepackage{url}					%Til links
+\hypersetup{pdfborder={0 0 0}}		%Fjerner bokse rundt om links
+\usepackage[numbers]{natbib}		%Bibtex
+
+\onehalfspacing
+\bibliographystyle{plainnat}
+\usepackage{multicol} %til at lave flere kolonner
+\usepackage{graphicx}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\setlength{\parindent}{0pt} %Ingen indhak
+\usepackage[defaultlines=2,all]{nowidow}
+\usepackage{amsmath}
+\usepackage{gensymb}
+\usepackage{listings} 
