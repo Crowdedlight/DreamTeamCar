@@ -15,6 +15,9 @@
 .org 0x14
 	jmp	Speed_Measure
 
+.ORG URXCaddr
+	jmp	USART_Receive
+
 .org 0x2A
 Reset:
 	ldi	R19, 0x00	;Clear speed mesure bits
@@ -78,7 +81,7 @@ USART_Init:
 	ldi 	R16, (1<<UDRE)	;
 	out 	UCSRA, R16
 
-	ldi 	R16, (1<<RXEN) | (1<<TXEN)
+	ldi 	R16, (1<<RXCIE) | (1<<RXEN) | (1<<TXEN)
 	out 	UCSRB, R16
 
 	ldi 	R16, (1<<USBS) | (1<<UCSZ1) | (1<<UCSZ0) | (1<<URSEL)
@@ -118,8 +121,8 @@ Timer_init1:
 ;********************
 ;********************
 Main:				;Main loop.
-	sbic 	UCSRA, RXC	;Tjek om der er modtaget seriel data.
-	call	USART_Receive
+	;sbic 	UCSRA, RXC	;Tjek om der er modtaget seriel data.
+	;call	USART_Receive
 
 	out	OCR2, R25	;Hastigheden sættes til værdien i R25.
 
@@ -188,6 +191,7 @@ Clear_Counter:
 ;*  Speed Measure   *
 ;********************
 Speed_Measure:
+	cli
 	in	R17, TCNT1L	;WheelSpeed LSB
 	in	R18, TCNT1H	;WheelSpeed MSB
 
@@ -213,11 +217,12 @@ Speed_Measure:
 	call	USART_Transmit
 	cbr	R28, 0b00000010
 
-
+	sei
 	reti
 
 Error_Calculation:
 	ldi	R23, 0xBB
+	sei
 	reti
 
 ;********************
@@ -244,7 +249,7 @@ Read_Acc:
 ;********************
 USART_Receive:
 				;De 3 bytes gemmes i R29, R30 og R31.
-
+	cli
 USART_Receive1:
 	sbis	UCSRA, RXC
 	rjmp	USART_Receive1
@@ -306,7 +311,9 @@ Type_Set_Start:
 	ldi	R29, 0xBB
 	ldi	R30, 0x10
 	sbr	R28, 0b00000001
-	ret
+
+	sei
+	reti
 
 ;********************
 ;*    Set Stop      *
@@ -317,7 +324,8 @@ Type_Set_Stop:
 	ldi	R30, 0x11
 	ldi	R31, 0x00
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 
 ;********************
 ;*Get Register Data *
@@ -353,49 +361,56 @@ Error:
 	ldi	R30, 0xBB
 	ldi	R31, 0xBB
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 ;####################
 Reply_Register_20:
 	ldi	R29, 0xBB
 	ldi	R30, 0x12
 	mov	R31, R20
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 
 Reply_Register_21:
 	ldi	R29, 0xBB
 	ldi	R30, 0x12
 	mov	R31, R21
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 
 Reply_Register_22:
 	ldi	R29, 0xBB
 	ldi	R30, 0x12
 	mov	R31, R22
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 
 Reply_Register_23:
 	ldi	R29, 0xBB
 	ldi	R30, 0x12
 	mov	R31, R23
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 
 Reply_Register_24:
 	ldi	R29, 0xBB
 	ldi	R30, 0x12
 	mov	R31, R24
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 
 Reply_Register_25:
 	ldi	R29, 0xBB
 	ldi	R30, 0x12
 	mov	R31, R25
 	sbr	R28, 0b00000001
-	ret
+	sei
+	reti
 
 
 ;********************
