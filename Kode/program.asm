@@ -75,13 +75,13 @@ USART_Init:
 	out 	UBRRL, R16
 
 
-	ldi 	R16, 0b00100000	;
+	ldi 	R16, (1<<UDRE)	;
 	out 	UCSRA, R16
 
 	ldi 	R16, (1<<RXEN) | (1<<TXEN)
 	out 	UCSRB, R16
 
-	ldi 	r16, 0b10001110	;
+	ldi 	R16, (1<<USBS) | (1<<UCSZ1) | (1<<UCSZ0) | (1<<URSEL)
 	out 	UCSRC, R16
 
 Stack_init:
@@ -98,7 +98,7 @@ Timer_init0:			; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 tic
 	out	TCCR0, R16
 
 Timer_Interrupt0:
-	ldi	R16, 0b00000000
+	ldi	R16, 0b00000010
 	out 	TIMSK, R16
 	sei
 
@@ -188,9 +188,8 @@ Clear_Counter:
 ;*  Speed Measure   *
 ;********************
 Speed_Measure:
-
-	in	R18, TCNT1H	;WheelSpeed MSB
 	in	R17, TCNT1L	;WheelSpeed LSB
+	in	R18, TCNT1H	;WheelSpeed MSB
 
 
 	mov	R22, R18	;Flyt læste værdier til at gemmes for næste udregning
@@ -200,16 +199,25 @@ Speed_Measure:
 	sbc	R18, R20	;Substrat MSB med Carry
 
 				;Hvis negativt flag er sat er udregningen forkert
-	;brmi	Error_Calculation
+	brmi	Error_Calculation
 
 	mov	R20, R22	;Flyt de gemte værdier tilbage til korrekt register for næste udregning
 	mov	R19, R21
 
+
 	mov	R23, R17	;Flyt pulses/10 ms til Speed register.
+
+	ldi	R29, 0xBB	;Transmit LSB af tælleregisteret.
+	ldi	R30, 0x16
+	mov	R31, R23
+	call	USART_Transmit
+	cbr	R28, 0b00000010
+
 
 	reti
 
 Error_Calculation:
+	ldi	R23, 0xBB
 	reti
 
 ;********************
@@ -236,6 +244,7 @@ Read_Acc:
 ;********************
 USART_Receive:
 				;De 3 bytes gemmes i R29, R30 og R31.
+
 USART_Receive1:
 	sbis	UCSRA, RXC
 	rjmp	USART_Receive1
