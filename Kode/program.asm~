@@ -137,8 +137,8 @@ Main:				;Main loop.
 	sbrc	R28, 1		;Tjek om der er banedata som skal sendes over seriel.
 	call	Transmit_Length
 
-	sbrc	R28, 2		;Tjek om tælleren skal nulstilles.
-	call	Clear_Counter
+	;sbrc	R28, 2		;Tjek om tælleren skal nulstilles.
+	;call	Clear_Counter
 
 	;call	Read_Acc	;Læs accelerometeret og send værdien over seriel.
 
