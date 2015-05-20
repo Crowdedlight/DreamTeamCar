@@ -1,3 +1,4 @@
+;Dette program lyser med den grønne diode når den er inde i et sving
 .include "m32def.inc"
 
 
@@ -9,11 +10,18 @@
 .equ Stop=0x11
 .equ Register=0x12
 
+.equ LowCorner= 0x70          ; Bestemmer grensen til at et sving bliver godkendt
+.equ HighCorner=0x90         ; Bestemmer grensen til at et sving bliver godkendt
+
+
 .org 0
 	jmp	Reset
+    
+.org 0x02
+    jmp Speed_Measure_V2
 
-.org 0x14
-	jmp	Speed_Measure
+.org 0x16
+    jmp Timer0_Clear
 
 .ORG URXCaddr
 	jmp	USART_Receive
@@ -30,6 +38,8 @@ Reset:
 
 	ldi	R24, 0x00	;LapCounter register.
 	ldi	R25, 0x00	;Speed register .
+    ldi R26, 0x00   ; Speed V2
+    ldi R27, 0x00   ; acc reg
 
 	ldi	R28, 0x00	;Status register, 0-bit sættes høj når seriel data skal sendes.
 				;1-bit sættes høj når banelængde skal sendes.
@@ -45,7 +55,7 @@ Reset:
 ;********************
 ;********************
 PORTA_Init:			;
-	sbi	DDRA, 0		;Sættes til output. Gul LED
+	sbi	DDRA, 0		;Sættes til output. grøn LED
 	cbi	DDRA, 1		;Sættes til input. CNY70
 	cbi	DDRA, 2		;Sættes til input. Accelerometer, læses via ADC.
 
@@ -53,6 +63,10 @@ PORTB_Init:
 	sbi	DDRB, 5		;MOSI
 	cbi	DDRB, 6		;MISO
 	sbi	DDRB, 7		;CLK
+    sbi DDRB, 4     ;Fron LED
+    sbi DDRB, 3     ;Left LED
+    sbi DDRB, 2     ;Right LED
+
 
 PORTC_Init:
 	sbi	DDRC, 2		;Sættes til output. Enable H-Bro.
@@ -95,11 +109,14 @@ Stack_init:
 	ldi	R16, LOW(RAMEND)
 	out	SPL, R16
 
-Timer_init0:			; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 ticks
-	ldi	R16, 0x9B	; 155 + 1 ticks
-	out	OCR0, R16
+Timer_init0:			
+    
+    ; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 ticks
+	;ldi	R16, 0x9B	; 155 + 1 ticks
+	;out	OCR0, R16
 
-	ldi	R16, 0b00001101	; 1024 Prescale Og CTC mode
+	;ldi	R16, 0b00001101	; 1024 Prescale Og CTC mode
+    ldi     R16, 0b00000100
 	out	TCCR0, R16
 
 Timer_Interrupt0:
@@ -120,6 +137,13 @@ Timer_init1:
 
 	sbi	PORTC, 2
 	cbi	PORTC, 3
+
+Hardware_int_init:
+    ldi R16, 1<<INT0
+    out GICR,R16            ; Initialiser interupt på PD2
+    ldi R16, (1<<ISC01|0<<ISC00)
+    out MCUCR,R16           ; Sætter INT0 til at trigge på rising
+    
 ;********************
 ;********************
 ;*       Main       *
@@ -140,7 +164,7 @@ Main:				;Main loop.
 	sbrc	R28, 2		;Tjek om tælleren skal nulstilles.
 	call	Clear_Counter
 
-	;call	Read_Acc	;Læs accelerometeret og send værdien over seriel.
+	call	Read_Acc	;Læs accelerometeret og send værdien over seriel.
 
 jmp	Main			;Slutningen af mainloop.
 
@@ -190,43 +214,6 @@ Clear_Counter:
 	ret
 
 ;********************
-;*  Speed Measure   *
-;********************
-Speed_Measure:
-	cli
-	in	R17, TCNT1L	;WheelSpeed LSB
-	in	R18, TCNT1H	;WheelSpeed MSB
-
-
-	mov	R22, R18	;Flyt læste værdier til at gemmes for næste udregning
-	mov	R21, R17
-
-	sub	R17, R19	;Substrat LSB
-	sbc	R18, R20	;Substrat MSB med Carry
-
-				;Hvis negativt flag er sat er udregningen forkert
-	brmi	Error_Calculation
-
-	mov	R20, R22	;Flyt de gemte værdier tilbage til korrekt register for næste udregning
-	mov	R19, R21
-
-
-	mov	R23, R17	;Flyt pulses/10 ms til Speed register.
-
-	;ldi	R29, 0xBB	;Transmit LSB af tælleregisteret.
-	;ldi	R30, 0x16
-	;mov	R31, R23
-	;call	USART_Transmit
-
-	sei
-	reti
-
-Error_Calculation:
-	ldi	R23, 0xBB
-	sei
-	reti
-
-;********************
 ;*     Read Acc     *
 ;********************
 Read_Acc:
@@ -236,14 +223,30 @@ Read_Acc:
 	sbis	ADCSR, ADIF	;Venter på at ADC'en er klar.
 	rjmp	Read_Acc
 	sbi	ADCSR, ADIF	;ADIF flag ryddes.
-	in	R31, ADCL	;ADC læses, ADCL bruges ikke.
-	in	R31, ADCH	;ADC læses, ADCH bruges.
+	in	R27, ADCL	;ADC læses, ADCL bruges ikke.
+	in	R27, ADCH	;ADC læses, ADCH bruges.
+    mov R31,R27
 
 	ldi	R29, 0xBB	;Seriel data gøres klar. Reply
 	ldi	R30, 0x15	;Seriel data gøres klar. Acc
 
 	call	USART_Transmit
+    
+    ldi R16,0x6A
+    sub R16,R27 
+    brpl light
+    ldi R16,0x90
+    sub R16,R27 
+    brmi light
+    cbi     PORTA,0
 	ret
+    
+    light:
+    sbi     PORTA,0
+    call  Transmit_Length
+    ret
+    
+    
 
 ;********************
 ;*  USART Receiver  *
@@ -439,3 +442,48 @@ USART_Transmit3:
 	out	UDR, R31
 	cbr	R28, 0b00000001
 	ret
+    
+    
+;********************
+;*  Speed_Measur_V2 *
+;********************
+Speed_Measure_V2:
+    cli
+    ;SBIS    PINA,0
+    ;sbi	    PORTA, 0
+    ;SBIC    PINA,0
+    ;cbi     PORTA,0
+    
+    in      R26,TCNT0       ; læs counter register over i R26
+    mov     R31,R26         ; flytter farten over i data send 
+    ;ldi     R30,0x16        ; Sender speed
+    ;ldi     R29,0xBB        ; Reply
+    
+    ;ldi     R28,0b00000001  ; Fortæller at der skal sendes data.
+    ldi     R16,0x00
+    out     TCNT0,R16       ; Nulstiller timer counter
+    ;sbi     PORTB,0
+    nop
+    nop
+    sei
+    
+    reti
+
+    
+;********************
+;*  Clear Timer0    *
+;********************    
+Timer0_Clear:
+    cli
+    ;SBIS    PINA,0
+    ;sbi	    PORTA, 0
+    ;SBIC    PINA,0
+    ;cbi     PORTA,0
+               ; Hvis Timer 0 overflower kommer springer den her til
+               ; og der skal evt. ske noget her som forteller prtogrammet at den er overflowet.
+    ;ldi     R16,0x00
+    ;out     TCNT0,R16                
+    ;ldi     R16,0x01
+    ;out     TIFR,R16         ; nulstil timer interupt flag
+    sei
+    reti

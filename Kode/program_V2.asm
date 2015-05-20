@@ -11,9 +11,14 @@
 
 .org 0
 	jmp	Reset
+    
+.org 0x02
+    jmp Speed_Measure_V2
 
 .org 0x14
 	jmp	Speed_Measure
+.org 0x16
+    jmp Timer0_Clear
 
 .ORG URXCaddr
 	jmp	USART_Receive
@@ -26,10 +31,12 @@ Reset:
 	ldi	R22, 0x00	;Clear speed mesure bits
 
 
-	ldi	R23, 0x00	;Målt hastighed.
+	ldi	R23, 0x00	;Målt hastighed. Og temp hastighed
 
 	ldi	R24, 0x00	;LapCounter register.
 	ldi	R25, 0x00	;Speed register .
+    ldi R26, 0x00   ;Speed register V2.
+    ldi R27, 0x00   ;Speed Check register
 
 	ldi	R28, 0x00	;Status register, 0-bit sættes høj når seriel data skal sendes.
 				;1-bit sættes høj når banelængde skal sendes.
@@ -46,6 +53,8 @@ Reset:
 ;********************
 PORTA_Init:			;
 	sbi	DDRA, 0		;Sættes til output. Gul LED
+    sbi DDRA,5
+    sbi DDRA,6
 	cbi	DDRA, 1		;Sættes til input. CNY70
 	cbi	DDRA, 2		;Sættes til input. Accelerometer, læses via ADC.
 
@@ -53,10 +62,14 @@ PORTB_Init:
 	sbi	DDRB, 5		;MOSI
 	cbi	DDRB, 6		;MISO
 	sbi	DDRB, 7		;CLK
+    sbi DDRB,0
+    
 
 PORTC_Init:
 	sbi	DDRC, 2		;Sættes til output. Enable H-Bro.
 	sbi	DDRC, 3		;Sættes til output. Dir, H-Bro.
+    sbi DDRC, 5
+    
 
 PORTD_Init:
 	;sbi	DDRD, 2
@@ -95,12 +108,15 @@ Stack_init:
 	ldi	R16, LOW(RAMEND)
 	out	SPL, R16
 
-Timer_init0:			; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 ticks
-	ldi	R16, 0x9B	; 155 + 1 ticks
-	out	OCR0, R16
+Timer_init0:			
+                    ; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 ticks
+	;ldi	R16, 0x9B	; 155 + 1 ticks
+	;ldi     R16,0xFF    ; Fuld timer
+    ;out	OCR0, R16
 
-	ldi	R16, 0b00001101	; 1024 Prescale Og CTC mode
-	out	TCCR0, R16
+	;ldi	R16, 0b00001101	; 1024 Prescale Og CTC mode
+	ldi     R16, 0b0000100 ; 256 prescale og normale mode
+    out	TCCR0, R16
 
 Timer_Interrupt0:
 	ldi	R16, 0b00000010
@@ -120,15 +136,28 @@ Timer_init1:
 
 	sbi	PORTC, 2
 	cbi	PORTC, 3
+    
+ Hardware_int_init:
+    ldi R16, 1<<INT0
+    out GICR,R16            ; Initialiser interupt på PD2
+    ldi R16, (1<<ISC01|1<<ISC00)
+    out MCUCR,R16           ; Sætter INT0 til at trigge på rising edge
+    
+    
+ 
+    
 ;********************
 ;********************
 ;*       Main       *
 ;********************
 ;********************
 Main:				;Main loop.
-	out	OCR2, R25	;Hastigheden sættes til værdien i R25.
+    
+    out	    OCR2, R25	;Hastigheden sættes til værdien i R25.
 
-	sbic	PINA, 1		;Tjek om den hvidelinje bliver detekteret.
+	
+    
+    sbic	PINA, 1		;Tjek om den hvidelinje bliver detekteret.
 	call	LapCounter
 
 	sbrc	R28, 0		;Tjek om der er data som skal sendes over seriel.
@@ -148,7 +177,7 @@ jmp	Main			;Slutningen af mainloop.
 ;*    LapCounter    *
 ;********************
 LapCounter:
-	sbi	PORTA, 0
+	;sbi	PORTA, 0
 	sbic	PINA, 1
 	jmp 	LapCounter
 	inc	R24
@@ -158,7 +187,7 @@ LapCounter:
 	mov	R31, R24
 	sbr	R28, 0b00000111
 
-	cbi	PORTA, 0
+	;cbi	PORTA, 0
 	ret
 
 ;********************
@@ -439,3 +468,65 @@ USART_Transmit3:
 	out	UDR, R31
 	cbr	R28, 0b00000001
 	ret
+    
+;********************
+;*  Clear Timer0    *
+;********************    
+Timer0_Clear:
+    cli
+               ; Hvis Timer 0 overflower kommer springer den her til
+               ; og der skal evt. ske noget her som forteller prtogrammet at den er overflowet.
+               
+    ldi     R16,0x01
+    out     TIFR,R16         ; nulstil timer interupt flag
+    sei
+    reti
+
+
+;********************
+;*  Speed_Measur_V2 *
+;********************
+Speed_Measure_V2:
+    cli
+    SBIS    PINA,0
+    sbi	    PORTA, 0
+    SBIC    PINA,0
+    cbi     PORTA,0
+    
+    in      R26,TCNT0       ; læs counter register over i R26
+    mov     R31,R26         ; flytter farten over i data send 
+    ldi     R30,0x16        ; Sender speed
+    ;ldi     R29,0xBB        ; Reply
+    
+    ldi     R28,0b00000001  ; Fortæller at der skal sendes data.
+    ldi     R16,0x00
+    out     TCNT0,R16       ; Nulstiller timer counter
+    ;sbi     PORTB,0
+    sei
+    
+    reti
+    
+   
+ 
+;********************
+;*  Check_Speed     *
+;********************   
+
+Check_Speed:
+
+
+    mov R27,R26     ; Flyt den aktuelle fart over i R27
+    sub R27,R25
+    brmi Inc_Speed
+    Brne Dec_Speed
+    ret
+    
+Dec_Speed:  
+
+ret  
+
+Inc_Speed:
+
+ret
+
+ret

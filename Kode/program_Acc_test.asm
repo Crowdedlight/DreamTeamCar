@@ -1,3 +1,5 @@
+; Program til at måle acceleration af bilen
+
 .include "m32def.inc"
 
 
@@ -53,10 +55,14 @@ PORTB_Init:
 	sbi	DDRB, 5		;MOSI
 	cbi	DDRB, 6		;MISO
 	sbi	DDRB, 7		;CLK
+    sbi DDRB, 4     ;Fron LED
+    sbi DDRB, 3     ;Left LED
+    sbi DDRB, 2     ;Right LED
 
 PORTC_Init:
 	sbi	DDRC, 2		;Sættes til output. Enable H-Bro.
-	sbi	DDRC, 3		;Sættes til output. Dir, H-Bro.
+	sbi	DDRC, 3		;Sættes til output. pin til retnings bestemmelse
+    cbi PORTC,3
 
 PORTD_Init:
 	;sbi	DDRD, 2
@@ -126,11 +132,15 @@ Timer_init1:
 ;********************
 ;********************
 Main:				;Main loop.
+    sbi PORTB,2
+    sbi PORTB,3
+    SBI PORTB,4
 	out	OCR2, R25	;Hastigheden sættes til værdien i R25.
 
 	sbic	PINA, 1		;Tjek om den hvidelinje bliver detekteret.
-	call	LapCounter
-
+	;call	LapCounter
+    ;call Break
+    call Reverse
 	sbrc	R28, 0		;Tjek om der er data som skal sendes over seriel.
 	call	USART_Transmit
 
@@ -439,3 +449,26 @@ USART_Transmit3:
 	out	UDR, R31
 	cbr	R28, 0b00000001
 	ret
+
+
+;********************
+;*  Reverse         *
+;********************
+
+Reverse:
+    ldi R25,0x00
+    sbi PORTC,3
+    sbi     PORTA,0
+    
+    ret
+
+
+;********************
+;*  Break           *
+;********************
+
+Break:
+    ldi R25,0x00
+    sbi     PORTA,0
+    
+    ret

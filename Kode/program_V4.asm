@@ -11,9 +11,12 @@
 
 .org 0
 	jmp	Reset
+    
+.org 0x02
+    jmp Speed_Measure_V2
 
-.org 0x14
-	jmp	Speed_Measure
+.org 0x16
+    jmp Timer0_Clear
 
 .ORG URXCaddr
 	jmp	USART_Receive
@@ -95,11 +98,14 @@ Stack_init:
 	ldi	R16, LOW(RAMEND)
 	out	SPL, R16
 
-Timer_init0:			; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 ticks
-	ldi	R16, 0x9B	; 155 + 1 ticks
-	out	OCR0, R16
+Timer_init0:			
+    
+    ; CTC mode, 155 + 1 = 156 ticks !!! For præcis 10ms = 156.25 ticks
+	;ldi	R16, 0x9B	; 155 + 1 ticks
+	;out	OCR0, R16
 
-	ldi	R16, 0b00001101	; 1024 Prescale Og CTC mode
+	;ldi	R16, 0b00001101	; 1024 Prescale Og CTC mode
+    ldi     R16, 0b00000100
 	out	TCCR0, R16
 
 Timer_Interrupt0:
@@ -120,6 +126,13 @@ Timer_init1:
 
 	sbi	PORTC, 2
 	cbi	PORTC, 3
+
+Hardware_int_init:
+    ldi R16, 1<<INT0
+    out GICR,R16            ; Initialiser interupt på PD2
+    ldi R16, (1<<ISC01|0<<ISC00)
+    out MCUCR,R16           ; Sætter INT0 til at trigge på rising
+    
 ;********************
 ;********************
 ;*       Main       *
@@ -188,43 +201,6 @@ Clear_Counter:
 	out	TCNT1L, R16
 	cbr	R28, 0b00000100
 	ret
-
-;********************
-;*  Speed Measure   *
-;********************
-Speed_Measure:
-	cli
-	in	R17, TCNT1L	;WheelSpeed LSB
-	in	R18, TCNT1H	;WheelSpeed MSB
-
-
-	mov	R22, R18	;Flyt læste værdier til at gemmes for næste udregning
-	mov	R21, R17
-
-	sub	R17, R19	;Substrat LSB
-	sbc	R18, R20	;Substrat MSB med Carry
-
-				;Hvis negativt flag er sat er udregningen forkert
-	brmi	Error_Calculation
-
-	mov	R20, R22	;Flyt de gemte værdier tilbage til korrekt register for næste udregning
-	mov	R19, R21
-
-
-	mov	R23, R17	;Flyt pulses/10 ms til Speed register.
-
-	;ldi	R29, 0xBB	;Transmit LSB af tælleregisteret.
-	;ldi	R30, 0x16
-	;mov	R31, R23
-	;call	USART_Transmit
-
-	sei
-	reti
-
-Error_Calculation:
-	ldi	R23, 0xBB
-	sei
-	reti
 
 ;********************
 ;*     Read Acc     *
@@ -439,3 +415,48 @@ USART_Transmit3:
 	out	UDR, R31
 	cbr	R28, 0b00000001
 	ret
+    
+    
+;********************
+;*  Speed_Measur_V2 *
+;********************
+Speed_Measure_V2:
+    cli
+    ;SBIS    PINA,0
+    ;sbi	    PORTA, 0
+    ;SBIC    PINA,0
+    ;cbi     PORTA,0
+    
+    in      R26,TCNT0       ; læs counter register over i R26
+    mov     R31,R26         ; flytter farten over i data send 
+    ldi     R30,0x16        ; Sender speed
+    ;ldi     R29,0xBB        ; Reply
+    
+    ldi     R28,0b00000001  ; Fortæller at der skal sendes data.
+    ldi     R16,0x00
+    out     TCNT0,R16       ; Nulstiller timer counter
+    ;sbi     PORTB,0
+    nop
+    nop
+    sei
+    
+    reti
+
+    
+;********************
+;*  Clear Timer0    *
+;********************    
+Timer0_Clear:
+    cli
+    ;SBIS    PINA,0
+    ;sbi	    PORTA, 0
+    ;SBIC    PINA,0
+    ;cbi     PORTA,0
+               ; Hvis Timer 0 overflower kommer springer den her til
+               ; og der skal evt. ske noget her som forteller prtogrammet at den er overflowet.
+    ;ldi     R16,0x00
+    ;out     TCNT0,R16                
+    ;ldi     R16,0x01
+    ;out     TIFR,R16         ; nulstil timer interupt flag
+    sei
+    reti

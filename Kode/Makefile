@@ -1,7 +1,7 @@
 # Makefile for programming ATmega32 using assembler
-PROJECT=program
-# PROGRAMMER=-c avrispmkII -P usb # For the large blue AVR MKII
- PROGRAMMER=-c usbasp -P usb # For cheap chinese programmer
+PROJECT=program_V4_4
+#PROGRAMMER=-c avrispmkII -P usb # For the large blue AVR MKII
+PROGRAMMER=-c usbasp -P usb # For cheap chinese programmer
 # PROGRAMMER=-c stk500v1 -P /dev/ttyUSB0 # For the small green programmer
 # PROGRAMMER=-c buspirate -P usb # For the BusPirate
 
