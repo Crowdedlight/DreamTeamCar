@@ -12,6 +12,7 @@
 \usepackage{subcaption}				%Giver mulighed for subcaptions i billeder
 \usepackage{wrapfig}				%For indsættelse af figur
 \usepackage{blindtext}				%For indsættelse af blindtext
+\usepackage{lastpage}               %For totale side antal
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{placeins} %til float barrier								%Ændrer marginer
@@ -29,7 +30,8 @@
 \author{}
 \date{}
 
-\newcommand{\forfattere}{Peter Gilsaa, Mads Tilgaard Jensen, Eskild Andresen, Sara Marie Gadgaard \& Frederik Mazur Andersen}
+\newcommand{\forfattere}{Peter Gilsaa, Mads Tilgaard Jensen, Eskild Andresen, \\
+Sara Marie Gadgaard \& Frederik Mazur Andersen}
 \newcommand{\titel}{Pole Position}
 \newcommand{\korttitel}{Pole Position}
 \newcommand{\afldato}{27. Maj 2015}
@@ -48,7 +50,7 @@
 \rhead{\rightmark}
 \lfoot{\forfattere}
 \cfoot{}
-\rfoot{\thepage}
+\rfoot{Side \thepage\ af \pageref{LastPage}}
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0.5pt}
 
@@ -94,7 +96,7 @@
 \usepackage{graphicx}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \setlength{\parindent}{0pt} %Ingen indhak
-\usepackage[defaultlines=2,all]{nowidow}
+\usepackage[defaultlines=1,all]{nowidow}
 \usepackage{amsmath}
 \usepackage{gensymb}
 \usepackage{listings} 
