@@ -12,10 +12,11 @@
 \usepackage{subcaption}				%Giver mulighed for subcaptions i billeder
 \usepackage{wrapfig}				%For indsættelse af figur
 \usepackage{blindtext}				%For indsættelse af blindtext
+\usepackage{lastpage}               %For totale side antal
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{placeins} %til float barrier								%Ændrer marginer
-\usepackage[top=3cm, bottom=3cm, left=3.5cm, right=3.0cm]{geometry}
+\usepackage[top=3cm, bottom=3cm, left=3.5cm, right=2.5cm]{geometry}
 \usepackage{setspace}				%For ændring af linjeafstand
 \usepackage{icomma}					%Fjerner mellemrum efter komma
 \usepackage{pdfpages}
@@ -29,12 +30,13 @@
 \author{}
 \date{}
 
-\newcommand{\forfattere}{Sebastian Bailey Hass, Morten Pedersen \& Frederik Mazur Andersen}
-\newcommand{\titel}{Undersøgelse af Dynamiske Systemer}
-\newcommand{\korttitel}{Dynamiske Systemer}
-\newcommand{\afldato}{21. Oktober 2014}
-\newcommand{\fag}{Fysik}
-\newcommand{\klasse}{GSR-1}
+\newcommand{\forfattere}{Peter Gilsaa, Mads Tilgaard Jensen, Eskild Andresen, \\
+Sara Marie Gadgaard \& Frederik Mazur Andersen}
+\newcommand{\titel}{Pole Position}
+\newcommand{\korttitel}{Pole Position}
+\newcommand{\afldato}{27. Maj 2015}
+\newcommand{\fag}{PRO}
+\newcommand{\klasse}{AUR-2}
 
 
 % =====================================================================
@@ -48,15 +50,15 @@
 \rhead{\rightmark}
 \lfoot{\forfattere}
 \cfoot{}
-\rfoot{\thepage}
+\rfoot{Side \thepage\ af \pageref{LastPage}}
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0.5pt}
 
 % øg tekst højden med 2 cm på alle sider
-\addtolength\textheight{2cm}
-\addtolength\topmargin{-1cm}
-\addtolength\marginparwidth{1.5cm}
-\addtolength\headheight{1.6pt}
+%\addtolength\textheight{2cm}
+%\addtolength\topmargin{-1cm}
+%\addtolength\marginparwidth{1.5cm}
+%\addtolength\headheight{1.6pt}
 
 \makeindex
 
@@ -94,7 +96,7 @@
 \usepackage{graphicx}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \setlength{\parindent}{0pt} %Ingen indhak
-\usepackage[defaultlines=2,all]{nowidow}
+\usepackage[defaultlines=1,all]{nowidow}
 \usepackage{amsmath}
 \usepackage{gensymb}
 \usepackage{listings} 
