@@ -308,13 +308,41 @@ Type_Get:
 ;*    Set Start     *
 ;********************
 Type_Set_Start:
-	mov 	R25, R31
+
+	call Upscale_255
+
 	ldi	R29, 0xBB
 	ldi	R30, 0x10
 	sbr	R28, 0b00000001
 
 	sei
 	reti
+
+;********************
+;*  Upscale speed   *
+;********************
+Upscale_255:				; Skalerer hastighed fra 0-100 til interval 0-255
+	ldi     R16, 255                ; Multiplicerer med 255
+	mov     R17, R31                ; input værdi 0-100
+
+	mul     R17, R16                ; Multiplikation
+	movw    R16, R0                 ; Flyt resultat til R16:R17
+
+	ldi     R18, 100                ; Indlæs denominator
+	clr     R27                     ; Clear kvotienten
+	clr     R26                     ; Clear Kvotienten
+DIV16_100:
+	adiw    R27:R26, 1              ; Increment kviotenten
+
+	sub     R16, R18                ; Sub 100 fra Input LSB
+	sbci    R17, 0                  ; Sub 0 med carry MSB
+	brcc    DIV16_100               ; Break hvis NumMSB >=0
+
+	subi    R26, 1                  ; En gang for mange subs
+	sbci    R27, 0                  ; sub 1 fra kviotenten
+	mov	R25, R26		; Flyt resultatet LSB til speed register
+
+	ret
 
 ;********************
 ;*    Set Stop      *
