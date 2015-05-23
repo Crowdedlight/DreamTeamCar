@@ -1,0 +1,30 @@
+\input{preamble}
+\begin{document}
+
+\subsection{Måling af afstand}
+\label{afstandmål}
+I dette afsnit beskrives hvordan bilen måler hvor langt den er kørt. Her benyttes den samme sensor som bruges til udregning af farten der køres med. \\
+Afstanden bilen har kørt bruges til at mappe banen som der kan læses nærmere om i afsnit XX \todo{indsæt afnist}
+
+\subsubsection{Afstand Hardware - TCST1230}
+\label{afstandmål_hardware}
+Da sensoren er den samme som benyttes til måling af fart vil dens hardware ikke blive beskrevet her. Der henvises i stedet til afsnit \ref{fartmål_hardware} \\
+Den eneste ændring på hardwaren er at sensores udgangssignal til micro-controlleren går på indgang ”PB1.”
+
+\subsubsection{Afstand Software}
+\label{afstandmål_software}
+Hver gang sensoren sender en puls til ”PB1” på micro-controlleren så vil Timer1 inkrementer med en. Timer1 er valgt da det er en 16bit timer og derfor kan der køres XX meter før timeren giver overflow. Udregningen er som følger: 
+\begin{align*}
+udregning indsættes her
+\end{align*}
+\todo[inline]{fix udregning}
+Dette er rigeligt til formålet, da efter hver lige strækning vil tælleren nulstilles.  \todo{indsæt tal} \\
+
+Da der vides hvor mange pulses der går på en hjul omdrejning, nemlig 4.2, så kan der ved at tælle pulses udregnes hvor langt den har kørt. \todo{indsæt tal og henvis til journal} \\
+
+Timer1 er opsat med en prescale der tager udgangspunkt i et ekstern input. Dette betyder at det eksterne signal benyttes som clock-frekvens med rising edge. Rising edge betyder at en periode tager udgangspunkt i signalet på vej op i stedet for på vej ned. 
+
+
+
+
+\end{document}
