@@ -1,11 +1,8 @@
-\input{preamble}
-\begin{document}
-
-\subsection{Måling af farten}
+\section{Måling af farten - Wheelspeed Sensor}
 \label{fartmål}
-I dette afsnit beskrives der hvordan en sensor udnyttes til at beregne farten bilen kører med. Der vil både blive beskrevet hardwaren til sensoren samt hvordan den softwaremæssigt bruger sensoren. Farten bliver brugt til at mappe banen samt kører med konstant hastighed. Disse funktioner vil blive beskrevet i afsnit \todo{indsæt afsnit for konstant hastighed og mapning}. \\
+I dette afsnit beskrives der hvordan en wheelspeed sensor udnyttes til at beregne farten bilen kører med. Der vil både blive beskrevet hardwaren til sensoren samt hvordan den softwaremæssigt bruger sensoren. Farten bliver brugt til at mappe banen samt kører med konstant hastighed. Disse funktioner vil blive beskrevet i afsnit \todo{indsæt afsnit for konstant hastighed og mapning}. \\
 
-\subsubsection{Fart Hardware - TCST1230}
+\subsection{Fart Hardware - TCST1230}
 \label{fartmål_hardware}
 Vi benytter TCST1230, som er en optisk sensor, til at lave en fotogate. Sensoren består af en fotocelle og en vifte med 16 blade på. Hjulet med vifterne sidder på motorens akse og hver gang aksen drejer en omgang vil den bryde fotosensorens lys XX gange. Hver gang lyset brydes så fås en puls fra fotosensoren som sendes videre til micro-controlleren. Dette er illustreret i figur \ref{wheelspeed3D} 
 
@@ -49,7 +46,7 @@ Der blev gennem oscilloskop observeret pral på sensoren ved TTL signal behandli
 
 R4, som er pulldown modstanden, blev beregnet ved at kigge på figur 8 i databladet \todo{indsæt datablad}. Her blev modstanden udregnet til ca. 4K Ohm. Der anvendes her en 3.9K Ohm modstand \\
 
-\subsubsection{Fart Software}
+\subsection{Fart Software}
 \label{fartmål_software}
 Sensorens output er sat på ”PB1” og ”PD3” som går til ”Timer1” og ”INT0” i micro-controlleren. Så hver gang den får en puls så bliver timeren og interruptet triggeret. Timeren bliver benyttet til at finde længden den har kørt. Dette er beskrevet i afsnit \ref{afstandmål_software}. \\
 
@@ -75,5 +72,3 @@ Dette kan ses i lookup table i afsnit \todo{henvis til lookup table og sørg for
 Inden interruptet sluttes kaldes nogle labels der benyttes til at bestemme hvor på banen den er. Disse er beskrevet i afsnit XX. \todo{indsæt afsnit label} \\
 
 Til sidst så slås interrupts til igen og der returneres til der koden var nået til, indtil næste interrupt bliver kaldt.  
-
-\end{document}

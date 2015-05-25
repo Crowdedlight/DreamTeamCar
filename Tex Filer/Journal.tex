@@ -5,23 +5,18 @@
 % =====================================================================
 %====== Forside =======================================================
 %======================================================================
-\include{Forside}
+\input{Include/Forside}
 
-%\section{Informationer}
 \input{Include/Informationer}
 
-%\section{Resume}
 \input{Include/Resume}
 
-%\section{Forord}
 \input{Include/Forord}
 % =====================================================================
 %====== Indledning ====================================================
 %======================================================================
-%\section{Indholdsfortegnelse}
-%\input{Include/Indholdsfortegnelse}
 
-\include{Indledning}
+\input{Include/Indledning}
 
 %\section{Detektering af startlinje}
 \input{Include/Startlinje}
@@ -30,19 +25,23 @@
 \input{Include/Elektromagnet}
 
 % =====================================================================
-%====== Teori =========================================================
+%====== Primære afsnit ================================================
 %======================================================================
-%\include{Teori}
+\input{Include/fart}
 
-% =====================================================================
-%====== Målinger ======================================================
-%======================================================================
-%\include{Maalinger}
+\input{Include/afstand}
 
-% =====================================================================
-%====== Behandling af måledata ========================================
-%======================================================================
-%\include{Behandling_af_maaledata}
+\input{Include/motorstyr_brems}
+
+\input{Include/sving_bremse}
+
+\input{Include/Startlinje}
+
+\input{Include/Elektromagnet}
+
+\input{Include/kommunikation}
+
+%\input{Include/mapning}
 
 % =====================================================================
 %====== Konklusion ====================================================
@@ -58,7 +57,12 @@
 %\section{Symbolliste}
 \input{Include/Symbolliste}
 
+\newpage
 \section{Bilag}
 \input{Include/Elektromagnet-kraftmåling}
+
+\input{Include/beregn_gearing}
+
+\input{Include/lookup-bremse}
 
 \end{document}
