@@ -28,16 +28,37 @@ Formålet med denne journal er at undersøge muligheden for en elektromagnet til
 Forsøget går ud på at lave en elektromagnet der kan sidde under bilen, derfor laves en test magnet af 660 vindinger da der ikke kan være så flere vindinger. En kraftmåler opstilles så den kan måle begge elektromagneters ender, der sættes 14 V over elektromagneten og kraften måles nu ved at trække elektromagneten af kraftmåleren. Forsøget gentages nu med et stykke papir på 0,2 mm, dernæst 0,4 mm, indtil vi når op på 2mm. Permanentmagneten testes, den sættes på kraftmåleren og der trækkes ned af, hvor målingerne nu er gemt på computeren.
 
 \subsubsection*{Data}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+De nedestående data er et førsøg der er gentaget 3 gange og og luftgabet er lavet med flere stykker 0.2 mm papir, resultaterne er i Newton. \\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline 
-Luftgab & 0 & 0.2 & 0.4 & 0.6 & 0.8 & 1 & 1.2 & 1.4 & 1.6 & 1.8 & 2 & mm \\ 
+Luftgab & 0 & 0.2 & 0.4 & 0.6 & 0.8 & 1 & 1.2 & 1.4 & 1.6 & 1.8 & 2 \\ 
 \hline 
-Forsøg 1 & 1.345 & 1.320 & 1.090 & 1.100 & 1.090 & 1.130 & 1.060 & 1.090 & 0.930 & 0.970 & 0.960 & N \\ 
+Forsøg 1 & 1.345 & 1.320 & 1.090 & 1.100 & 1.090 & 1.130 & 1.060 & 1.090 & 0.930 & 0.970 & 0.960 \\ 
 \hline 
-Forsøg 2 & 1.570 & 1.150 & 1.350 & 1.320 & 1.120 & 1.050 & 1.000 & 1.060 & 1.040 & 0.950 & 0.870 & N \\ 
+Forsøg 2 & 1.570 & 1.150 & 1.350 & 1.320 & 1.120 & 1.050 & 1.000 & 1.060 & 1.040 & 0.950 & 0.870 \\ 
 \hline 
-Forsøg 3 & 1.000 & 1.440 & 1.350 & 1.100 & 1.200 & 1.200 & 1.200 & 1.100 & 1.000 & 0.930 & 0.980 & N \\ 
+Forsøg 3 & 1.000 & 1.440 & 1.350 & 1.100 & 1.200 & 1.200 & 1.200 & 1.100 & 1.000 & 0.930 & 0.980 \\ 
 \hline 
-Gennemsnit & 1.305 & 1.303 & 1.263 & 1.173 & 1.137 & 1.127 & 1.087 & 1.083 & 0.990 & 0.950 & 0.937 & N \\ 
+Gennemsnit & 1.305 & 1.303 & 1.263 & 1.173 & 1.137 & 1.127 & 1.087 & 1.083 & 0.990 & 0.950 & 0.937 \\ 
 \hline 
 \end{tabular} 
+
+\subsubsection*{Resultater}
+%\includegraphics[scale=1]{../Graphics/Graf_Elektromagnet_resultater.png}
+Her ligger punkterne over data sættet, hvor de røde punkter er data for alle forsøgene og de blå er gennemsnittet af disse forsøg. Vi får nu at der er en kraft på 0.9367 N, ved luftgabet på 2 mm.
+
+\subsubsection*{Udregninger}
+Vi udregner hvordan elektromagneten ville virke under ideele forhold, det vil sige hvis, der ikke var nogen flux spredning i elektromagneten. For udregningerne begynder antages det at materialet er en negering af jern, som ligger mellem 300-500 relativ permeabilitet.\\
+
+$H_{j}l_{j}+2H_{g}x=IN$ \\
+
+$H_{j}=\frac{B_{j}}{\mu_{0}\mu_{r}},\,H_{g}=\frac{B_{g}
+}{\mu_{0}}$\\
+
+Ved at antage at der ikke er nogen spredning i luftgabet er $B_{g}=B_{j}$ som nu giver:\\
+
+$\frac{B_{g}}{mu_{0}mu_{r}}*l_{j}+2*\frac{B_{g}}{mu_{0}}=IN$\\
+
+
+
+ 
