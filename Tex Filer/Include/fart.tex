@@ -16,7 +16,20 @@ Vi benytter TCST1230, som er en optisk sensor, til at lave en fotogate. Sensoren
 \label{wheelspeed3D}
 \end{figure}
 
-Efter test er der sat flere blade på viften da for at præcist at kunne bruge målingerne fra sensoren krævede det en højere opløsning. Dette fås ved at tilføje flere blade til viften så vi får flere pulses pr. omdrejning af aksen. Der er således nu så 4 blade på viften hvilket giver os 4 pulse pr. akse omdrejning. Dette svarer til XX pulses pr. hjul omdrejning. Dette giver en præcision på XXX  \todo{indsæt værdier i XX} \\
+Efter test er der sat flere blade på viften da for at præcist at kunne bruge målingerne fra sensoren krævede det en højere opløsning. Dette fås ved at tilføje flere blade til viften så vi får flere pulses pr. omdrejning af aksen. Der er således nu så 4 blade på viften hvilket giver os 4 pulse pr. akse omdrejning. Dette svarer til 16,8 pulses pr. hjul omdrejning. \\
+Se afsnit \ref{beregn_gearing} for udregningen af gearingen. \\
+Dette giver en opløsning der er 4 gange bedre, end kun at have 1 vifte. \\
+For bedre opløsning kunne der sættes flere vifter på, men kommer der for mange vifter på, vil det dog blive svært for sensoren at aflæse vifterne da deres mellemrum til sidst vil blive meget småt. Jo flere vifter der kommes på, jo sværere bliver det også at bygge ringen med vifterne. \\
+
+Der bliver i dette tilfælde valgt at have 4 vifter da det kunne bygges forholdsvis let og det giver en opløsning der er høj nok til hvad vi ønskede. Ved blot 1 vifte kørte vi 2cm per omdrejning. Da vi ved hjulet kører 0,2381 omgange pr. motor omdrejning så kan længden den kører mellem hver puls udregnes ved at multiplicerer hjul omdrejninger med hjulets omkreds:
+\begin{align*}
+0,2381*8,5 = 2,02 cm
+\end{align*}
+Dette er ikke ret præcist da vi så kun kan aflæse længden/farten i intervaller af 2cm. Det blev så sat 4 vifter på og dette giver en præcision på:
+\begin{align*}
+(0,2381/4)* 8,5 = 0,51cm
+\end{align*}
+Dette er markant bedre da den nu kun kører 0,51cm før den får en puls og udregner længde og hastighed. Så der fås flere mindre intervaller der kan tjekkes og reageres på. \\ 
 
 Som det kan ses på tegningen af kredsløbet i figur \ref{wheelspeedTegning} så er der sat nogle modstande og en kondensator på sensorens kredsløb. \\
 
@@ -27,7 +40,7 @@ Som det kan ses på tegningen af kredsløbet i figur \ref{wheelspeedTegning} så
 \label{wheelspeedTegning}
 \end{figure}
 
-Modstanden R3 i figur XX \todo{indsæt figur} er der for at sørge for at strømmen over dioden D2 ikke bliver højere end den kan tåle. Dioden kan nemlig kun klarer 30mA ifølge databladet. \todo{indsæt datablad}\\
+Modstanden R3 i figur \ref{wheelspeedTegning} er der for at sørge for at strømmen over dioden D2 ikke bliver højere end den kan tåle. Dioden kan nemlig kun klarer 30mA ifølge databladet. \todo{indsæt datablad}\\
 
 Modstanden R4 virker som en pulldown modstand der sørger for at hive signalet langt nok ned, når fototransistoren ikke modtager lys, så der er logisk lavt signal. \\
 
@@ -38,7 +51,7 @@ R4, som er pulldown modstanden, blev beregnet ved at kigge på figur 8 i databla
 
 \subsubsection{Fart Software}
 \label{fartmål_software}
-Sensorens output er sat på ”PB1” og ”PD3” som går til ”Timer1” og ”INT0” i micro-controlleren. Så hver gang den får en puls så bliver timeren og interruptet triggeret. Timeren bliver benyttet til at finde længden den har kørt. Dette er beskrevet i afsnit XX \todo{korrekt afsnit}. \\
+Sensorens output er sat på ”PB1” og ”PD3” som går til ”Timer1” og ”INT0” i micro-controlleren. Så hver gang den får en puls så bliver timeren og interruptet triggeret. Timeren bliver benyttet til at finde længden den har kørt. Dette er beskrevet i afsnit \ref{afstandmål_software}. \\
 
 Interruptet benyttes sammen med Timer0 til at finde farten. Timer 0 er sat op så den inkrementer hvert 0.000064 sekund. Hvilket svarer til den inkrementerer hvert 64. mikrosekund. Dette er sat ved at bruge en prescale på 1024. Da clock frekvensen på micro-processoren er 16MHz udregnes det således: \\
 \begin{align*}
@@ -56,12 +69,8 @@ Flowdiagrammet i figur \ref{fart_chart} viser processen hver gang Interruptet bl
 \label{fart_chart}
 \end{figure}
 
-Der slåes først interrupts fra globalt, for at dette interrupt ikke bliver afbrudt af et andet interrupt. Herefter indlæses den værdi tælleren er nået til. Denne værdi gemmes i registeret R26, som er vores ”målt fart” register. Så ligges der 0 ind i Timer0, for at nulstille den. På den måde får vi hvor mange gange der er gået 64 mikrosekunder på 1 puls. F.eks. hvis der er gået 128 mikrosekunder på 1 puls så har bilen farten: 
-\begin{align*}
-128 mikrosekunder / puls = XX / XX 
-\end{align*}
-\todo[inline]{indsæt korrekt udregning til en fart der kan bruges}
-Da der går XX pulses per hjul omdrejning. \\
+Der slåes først interrupts fra globalt, for at dette interrupt ikke bliver afbrudt af et andet interrupt. Herefter indlæses den værdi tælleren er nået til. Denne værdi gemmes i registeret R26, som er vores ”målt fart” register. Så ligges der 0 ind i Timer0, for at nulstille den. På den måde får vi hvor mange gange der er gået 64 mikrosekunder på 1 puls. F.eks. hvis der går 10 optællinger mellem timer puls, så har bilen farten: 7,9 m/s. \\
+Dette kan ses i lookup table i afsnit \todo{henvis til lookup table og sørg for table har korrekte enheder.}
 
 Inden interruptet sluttes kaldes nogle labels der benyttes til at bestemme hvor på banen den er. Disse er beskrevet i afsnit XX. \todo{indsæt afsnit label} \\
 
