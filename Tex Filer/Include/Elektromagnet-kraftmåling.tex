@@ -24,11 +24,18 @@ Formålet med denne journal er at undersøge muligheden for en elektromagnet til
 	\item En computer med programmet PASCO capstone som kan læse kraft målingerne.
  \end{enumerate}
 
-\subsubsection*{Forsøgs beskrivelse}
-Forsøget går ud på at lave en elektromagnet der kan sidde under bilen, derfor laves en test magnet af 660 vindinger da der ikke kan være så flere vindinger. En kraftmåler opstilles så den kan måle begge elektromagneters ender, der sættes 14 V over elektromagneten og kraften måles nu ved at trække elektromagneten af kraftmåleren. Forsøget gentages nu med et stykke papir på 0,2 mm, dernæst 0,4 mm, indtil vi når op på 2mm. Permanentmagneten testes, den sættes på kraftmåleren og der trækkes ned af, hvor målingerne nu er gemt på computeren.
+Forsøget går ud på at lave en elektromagnet der kan sidde under bilen, derfor laves en test magnet af 660 vindinger da der ikke kan være så flere vindinger. En kraftmåler opstilles så den kan måle begge elektromagneters ender, der sættes 14 V over elektromagneten og kraften måles nu ved at trække elektromagneten af kraftmåleren. Forsøget gentages nu med et stykke papir på 0.2 mm, dernæst 0,4 mm, indtil vi når op på 2mm. Permanentmagneten testes, den sættes på kraftmåleren og der trækkes ned af, hvor målingerne nu er gemt på computeren.
+
+\begin{figure}[h!]
+\center
+\includegraphics[scale=0.05, angle=270]{./Graphics/Forsogs_opstilling}
+\caption{Forsøgsopstilling for elektromagnet på kreftsensor}
+\label{Opstilling}
+\end{figure}
 
 \subsubsection*{Data}
 De nedestående data er et førsøg der er gentaget 3 gange og og luftgabet er lavet med flere stykker 0.2 mm papir, resultaterne er i Newton. \\
+
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline 
 Luftgab & 0 & 0.2 & 0.4 & 0.6 & 0.8 & 1 & 1.2 & 1.4 & 1.6 & 1.8 & 2 \\ 
@@ -41,15 +48,32 @@ Forsøg 3 & 1.000 & 1.440 & 1.350 & 1.100 & 1.200 & 1.200 & 1.200 & 1.100 & 1.00
 \hline 
 Gennemsnit & 1.305 & 1.303 & 1.263 & 1.173 & 1.137 & 1.127 & 1.087 & 1.083 & 0.990 & 0.950 & 0.937 \\ 
 \hline 
+\end{tabular}
+\\
+De nedestående data er fra målinger permanetmagneten, som er lavet så samme vis som elektromagnet\\
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Luftgab & 0 & 0.2 & 0.4 & 0.6 & 0.8 & 1.0 & 1.2 & 1.4 & 1.6 & 1.8 & 2 \\
+\hline
+Forsøg 1 & 4.20 & 4.82 & 3.34 & 4.17 & 4.12 & 4.14 & 3.25 & 2.97 & 2.18 & 2.52 & 1.65 \\
+\hline
+Forsøg 2 & 4.38 & 4.65 & 4.74 & 4.90 & 4.40 & 4.23 & 3.41 & 2.38 & 2.30 & 2.18 & 1.31 \\
+\hline
+Forsøg 3 & 4.67 & 4.95 & 4.37 & 4.79 & 4.12 & 3.44 & 3.30 & 1.96 & 1.85 & 1.65 & 1.48 \\
+\hline 
+Gennemsnit & 4.42 & 4.81 & 4.15 & 4.62 & 4.21 & 3.94 & 3.32 & 2.44 & 2.11 & 2.12 & 1.48 \\
+\hline
 \end{tabular} 
 
 \subsubsection*{Resultater}
 \begin{figure}[h!]
 \center
-\includegraphics[scale=0.2]{./Graphics/Graf_Elektromagnet_resultater}
-\caption{Data sættet i graf}
+\includegraphics[scale=0.3]{./Graphics/Graf_Elektromagnet_resultater}
+\caption{Data sættet for elektromagnet behandlet i graf}
 \label{Elektromagnet}
 \end{figure}
+
 Her ligger punkterne over data sættet, hvor de røde punkter er data for alle forsøgene og de blå er gennemsnittet af disse forsøg. Vi får nu at der er en kraft på 0.9367 N, ved luftgabet på 2 mm.
 
 \subsubsection*{Udregninger}
@@ -64,6 +88,36 @@ Ved at antage at der ikke er nogen spredning i luftgabet er $B_{g}=B_{j}$ som nu
 
 $\frac{B_{g}}{\mu_{0}\mu_{r}}*l_{j}+2*\frac{B_{g}}{\mu_{0}}=IN$\\
 
+$B_{g}$ isoleres og nu har vi ligningen:\\
+
+$B_{g}(x)=\frac{\mu_{0}IN}{({\frac{l_{j}}{\mu_{r}}}+2x)}$\\
+
+Da elektromagneten er en stål blanding vil permeabiliteten ligge mellem 300-500, derfor regnes $B_{g}$ nedre og øvre grænse.\\
+
+$B_{g,Min}(x)=\frac{1.256*10^{-6}*1.4*660}{\frac{0.07}{300}+2*0.002}=0.27$\\
+
+$B_{g,Max}(x)=\frac{1.256*10^{-6}*1.4*660}{\frac{0.07}{500}+2*0.002}=0.28$\\
+
+Her kan vi se at forskellen i permeabiliteten ikke har den store betydning når det kommer til udregning af magnetisk induktion (B). Magnetisk feltstyrke (H). 
+De næste beregninger gælder for luftgab:\\
+
+$U_{B}=\frac{1}{2\mu_{0}}*\frac{(\mu_{0}IN)^{2}}{({\frac{l_{j}}{\mu_{r}}}+2x)^{2}}*A_{j}*x$ \\
+
+Den magnetiske kraft kan findes ud fra $F_{magn,x}=+\frac{dU_{B}}{dx}$ \\
+Hvilket giver:\\
+$F_{magn,x}=A_{j}*\frac{(\mu_{0}IN)^{2}}{2\mu_{0}}*\frac{1}{(\frac{l_{j}}{\mu_{r}}+2x)^{2}}+x*(-2)*\frac{2}{(\frac{l_{j}}{\mu_{r}}+2x)^{3}}$\\
+
+Eller ved at reducere udtrykket:\\
+$F_{magn}(x)=-{\frac{B^{2}_{g}}{2\mu_{0}}}* {A_{j}}* (\frac{4x}{{\frac{l_{j}}{\mu_{r}}}+2x}-1) $\\
+
+Nu kan kraften ideelt set regnes ud:\\
+$ F_{magn,Min}=-\frac{0.27^{2}}{2*1.256*10^-6}*4.5*10^-5*(\frac{4*0.002}{\frac{0.07}{300}+2*0.002}-1)=-1.1619N $\\
+
+$ F_{magn,Min}=-\frac{0.28^{2}}{2*1.256*10^-6}*4.5*10^-5*(\frac{4*0.002}{\frac{0.07}{500}+2*0.002}-1)=-1.309N $\\
+
+Minus tegnet indikere at kraften virker nedad i samme retning som tyngdekraften.\\
+
+\subsubsection*{Konklusion}
+Ud fra data og beregninger kan man hurtigt konkludere at elektromagneten ikke er ideel, da der er et tab på $0.2249-0.372$N ved en afstand på 0.2 mm fra skinnerne. Tabet er blandt andet fluxspredning og fluxfringing. Derudover kan man se på daterne fra permanentmagneten at de falder og stiger hurtigt og er meget varierende, men som udgangspunkt går vi ud fra at de er rigtige. Permanentmagneten er 0.543N stærkere end elektromagneten ved de 0.2 mm afstand fra skinnerne.  
 
 
- 
