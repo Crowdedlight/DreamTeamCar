@@ -1,0 +1,40 @@
+\input{preamble}
+\begin{document}
+
+\section{Beregning af gearing}
+\label{beregn_gear}
+
+For at udregne hvor langt hjulet drejer på en puls og hvor mange pulse der skal til for at hjulet drejer en hel omgang skal gearing udregnes. \\
+Dette udregnes ved at kigger på de 2 tandhjul som er henholdsvis gear 1 og 2. Der kigges på begge tandhjul og deres tænder tælles. Ved at dividerer værdierne fås forholdet mellem tandhjulene. \\
+Dette har givet følgende forhold:
+\begin{align*}
+Gear1 = 10 / 14 = 0,7143 \\
+Gear2 = 9 / 127 = 0,3333
+\end{align*}
+Ligges gearene sammen:
+\begin{align*}
+Gear1*Gear2 = 0,7143 * 0,3333 = 0,2381
+\end{align*}
+
+Dette betyder at når motoren har drejet en omgang så har hjulet drejet \(0,2381\) omgange.
+Når sensoren giver en puls, har hjulet derfor kørt: \(\frac{0,2381}{4} = 0,0595\) \\
+Da hjulet er 8.5 cm i omkreds så svarer 1 puls til: \(0,0595*8,5 = 0,50595\)
+
+\subsection{Periode tid ved 4 m/s}
+\label{periode_4ms}
+Her udregnes periode tiden for signalet ved en hastighed på 4 m/s:
+\begin{align*}
+\frac{4m/s}{0,085m} = 47,1 RPS
+\end{align*}
+
+Når hjulet har kørt en omgang har motoren altså kørt:
+\begin{align*}
+(\frac{27}{9}) * (\frac{14}{10}) = 4,2
+\end{align*}
+
+Så motoren kører: \(47,1 RPS * 4,2 = 197,82 RPS = 11869,2 RPM \) \\
+Så der er: \(197,82 RPS *4 = 791,28 PPS \) \\
+\(1/791,28 = 0,001265 sekunder \) \\
+Dette giver altså en periode tid på: \(1,26 ms\)
+
+\end{document}
