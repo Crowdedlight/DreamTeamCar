@@ -30,26 +30,25 @@
 
 \input{Include/motorstyr_brems}
 
-\input{Include/sving_bremse}
+\input{Include/Accelerometer_sving}
 
 \input{Include/Elektromagnet}
 
-\input{Include/kommunikation}
+\input{Include/Mapning}
 
-%\input{Include/mapning}
+\input{Include/sving_bremse}
+
+\input{Include/kommunikation}
 
 % =====================================================================
 %====== Konklusion ====================================================
 %======================================================================
-%\include{Konklusion}
+\include{Konklusion}
 
-%\section{Litteraturliste}
 \input{Include/Litteraturliste}
 
-%\section{Ordliste}
 \input{Include/Ordliste}
 
-%\section{Symbolliste}
 \input{Include/Symbolliste}
 
 \newpage
@@ -60,4 +59,8 @@
 
 \input{Include/lookup-bremse}
 
+\includepdf[pages=1,scale=0.8,pagecommand=\section{MMA1270KEG Datablad} \label{MMA1270KEG}]{Include/MMA1270KEG_udklip.pdf}
+
+\includepdf[pages=1,scale=0.8,pagecommand=\section{TCST1230 Datablad} \label{TCST1230}]{Include/tcst1230_Udklip.pdf}
+\includepdf[pages=2-4, scale=0.8]{Include/tcst1230_Udklip.pdf}
 \end{document}

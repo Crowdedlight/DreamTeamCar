@@ -13,49 +13,50 @@
 %====== Indledning ====================================================
 %======================================================================
 \section{Indledning}
-skriv noget kort om indledning
+Scalextric er en stor producent af elektriske biler, skinner og fjernbetjeninger dertil. Det er populært blandt især børn, at bygge deres egen racerbane og køre om kap. Projektets store udfordring er at modificere en af Scalextrics biler og udstyre dem med sensorer, således at den selv kan køre og justere sin hastighed på en hensigtsmæssig måde.
 
-\subsection{Projekt beskrivelse}
-skriv noget kort om projekt beskrivelsen
-
+\subsection{Projektbeskrivelse}
 \subsubsection{Problemanalyse}
 \label{problemanalyse}
-Projektet skal få en elektrisk bil at hurtigst muligt at kører omgange på en vilkårlig bane uden at ryge af banen. For at opnå dette kræves forskellige sensorer som skal bygges og programmeres. Formålet er at opnå kendskab med programmering i Assembler og opbygning af sensor kredsløb, samt få programmering og sensorer til at arbejde sammen.  \\
-Projektet kan opskrives til følgende: \\
+Projektet skal få en elektrisk bil til hurtigst muligt at køre omgange på en vilkårlig bane uden at ryge af banen. For at opnå dette kræves forskellige sensorer, som skal monteres og programmeres. Formålet er at opnå kendskab til programmering i Assembler og opbygning af sensorkredsløb, samt få software og sensorer til at arbejde sammen.  \\
+Projektet består af følgende: \\
 
 \begin{itemize}
-\item Bluetooth Kommunikation med bilen via en bestemt Bluetooth protokol
-\item Byg og monter sensor kredsløb til de forskellige nødvendige sensorer
-\item Algoritme der kortlægger banen
-\item Algoritme der bruger den kortlagt bane og sensor data til at sætte optimal hastighed
+\item Bluetooth kommunikation med bilen via en given protokol.
+\item Byg og montér sensor kredsløb til de forskellige nødvendige sensorer.
+\item Algoritme der kortlægger banen.
+\item Algoritme der bruger den kortlagt bane og sensor data til at køre med optimal hastighed.
 \end{itemize}
 
 
 \subsubsection{Problemformulering}
 \label{problemformulering}
-Hvordan opbygges og programmeres en elektrisk bil til selv at kunne kører hurtigste tid på en vilkårlig bane? Denne problemstilling vil vi arbejde med i dette projekt, og dertil skal disse problemer løses: \\
+Hvordan opbygges og programmeres en elektrisk bil til selv at kunne køre hurtigste tid på en vilkårlig bane? Denne problemstilling vil vi arbejde med i dette projekt, og dertil skal disse problemer løses: \\
 
 \begin{itemize}
-\item Hvordan kommunikerer man med bilen?
-\item Hvilke sensorer skal benyttes for at gøre bilen selvkørende med så høj fart som muligt?
-\item Hvilken elektromagnetisk sensor/ Aktuator skal bruges?
-\item Hvordan detekteres målstregen med en sensor?
-\item Hvordan programmeres Micro kontrolleren så den kan kortlægge den vilkårlige bane?
-\item Hvordan programmeres bilen til at udnytte den kortlagte bane til at kører hurtigst muligt?
-\item Hvordan fås bilen til aktivt at bremse?
+\item Hvordan kommunikeres der med bilen?
+\item Hvilke sensorer skal benyttes for at gøre bilen selvkørende med så høj hastighed som muligt?
+\item Hvilken elektromagnetisksensor/-aktuator skal bruges?
+\item Hvordan detekteres målstregen?
+\item Hvordan detekteres sving?
+\item Hvordan programmeres microcontrolleren så den kan kortlægge en vilkårlig bane?
+\item Hvordan programmeres bilen til at udnytte den kortlagte bane til at køre hurtigst muligt?
+\item Hvordan bremser bilen best muligt?
 \end{itemize}
 
 \subsubsection{Afgrænsning}
-I denne opgave begrænser vi os til bygge sensorer kredsløb og programmere Micro kontrolleren til den elektriske bil. Vi skal ikke bygge bilen fra bunden, men modificerer en eksisterende model til at kunne styres gennem vores Micro kontroller. Bluetooth kommunikations protokollen er også bestemt for os, men vi skal selv implementerer denne og kan også udvide den. \\
+I denne opgave begrænser vi os til at bygge sensorkredsløb og programmere microcontrolleren til den elektriske bil. Vi skal ikke bygge bilen fra bunden, men modificere en eksisterende model til at kunne styres gennem vores microcontroller. Bluetooth kommunikationsprotokollen er også bestemt for os, men vi skal selv implementere denne og kan også udvide den. \\
 
-Derudover laver vi et lille program der kan snakke sammen med bilen til brug for testing og data modtagelse. Dette program er skrevet i Vb.net for ikke at bruge for meget tid og energi på det, da det kun benyttes til udvikling af bilen. \\
+Derudover laver vi et lille program der kan snakke sammen med bilen til testing og datamodtagelse. Dette program er skrevet i Visual Basic .NET for ikke at bruge for meget tid og energi på det, da det kun benyttes til udvikling af bilen. \\
 
-Vores projekt kan derfor fortolkes til at programmerer en Micro Kontroller til at modtage signaler fra sensorer og derudfra kortlægge en bane og give signaler til motoren for at sætte den hurtigste omgangstid. 
+Vores projekt kan derfor fortolkes til at programmere en microcontroller til at modtage signaler fra sensorer og derudfra kortlægge en bane og kontrollere motoren for at opnå den hurtigste omgangstid. 
 
 
 \subsubsection{Konkurrenceregler}
 \label{kon_regler}
-Den 29. maj 2015 afholdes poleposition konkurrencen. Her vinder det hold som har den korteste omgangstid. Der er visse krav til bilen for at gøre konkurrencen fair. Bilen skal kunne køre af sig selv og skal således starte når den sættes på banen. Det skal dog være muligt at sætte en hastighed eller stoppe bilen vha. bluetooth. Denne kommunikation skal overholde en protokol som senere vil blive uddybet. Selve banen består kun af rene højre eller venstre sving, dvs. at der minimum vil være en lige skinne mellem to sving. Bilens karosseri, dæk og undervogn må ikke ændres. Det er dog tilladt at lave mindre ændringer for at gøre plads til sensorer og lignende. Der må monteres permamagneter på bilen. Magneten som er monteret på bilen fra frabrikken må dog blive siddende. Der skal anvendes en elektromagnetisk sensor og/eller aktuator i projektet. Dette kan f.eks. være i form af en elektromagnet. 
+Den 29. maj 2015 afholdes Pole Position konkurrencen. Her vinder det hold, som har den hurtigste omgangstid. Der er visse krav til bilen for at gøre konkurrencen fair. Bilen skal kunne køre af sig selv og skal således starte når den sættes på banen. Det skal dog være muligt at sætte en hastighed eller stoppe bilen vha. Bluetooth. Denne kommunikation skal overholde en protokol, som senere vil blive uddybet. Selve banen består kun af rene højre eller venstre sving, dvs. at der minimum vil være en lige skinne mellem to sving. Bilens karosseri, dæk og undervogn må ikke ændres. Det er dog tilladt at lave mindre ændringer for at gøre plads til sensorer og lignende. Der må ikke monteres permamagneter på bilen. Magneten som er monteret på bilen fra fabrikken må dog blive siddende. Der skal anvendes en elektromagnetisk sensor og/eller -aktuator i projektet. Dette kan f.eks. være i form af en elektromagnet. 
 
 
 \subsection{Rapportstruktur}
+Projektet består af flere dele, hvor microcontrolleren er i centrum. Delene har forskellige realationer til microcontrolleren som \ref{struktur} illustrerer.\\
+\todo{SRAR REKT}

@@ -1,53 +1,70 @@
 \subsection{Lookup Table - Bremse Værdi}
 \label{lookup}
-\todo{lav en beregning fra tid til m/s, og forklar hvad enhed tiden er}
+Lookup-tabellen er udregnet på følgende måde: \\
+\begin{align*}
+Hastighed = \frac{0,00506}{(Periodetid*(256/16000000))}
+\end{align*}
+Hastigheden udregnes ved at dividere distancen der køres på én puls med periodetiden multipliceret med prescalaren divideret med klokfrekvensen. Dette vil give hastigheden i meter pr. sekund. \\
 
-\begin{table}[h]
-\centering
-\begin{tabular}{|c|c|c|c|}
+Herefter kan bremselængden udregnes i meter vha. formlen fra afsnit \ref{bremse}: \\
+\begin{align*}
+\frac{2,6-Hastighed}{2*-22}
+\end{align*}
+
+Herefter kan bremselængden omregnes fra enheden meter til pulser, da én puls er lig med 0,005m. \\
+\begin{align*}
+Pulser = \frac{Bremselaengde(m)}{0,00506}
+\end{align*}
+
+\begin{table}[H]
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-\multicolumn{1}{|l|}{Tid mellem pulses} & \multicolumn{1}{l|}{Hastighed(m/s)} & \multicolumn{1}{l|}{Bremselængde(m)} & \multicolumn{1}{l|}{Bremselængde(pulse)} \\ \hline
-10                                      & 7,906                               & 0,145596591                          & 29                                       \\ \hline
-11                                      & 7,188                               & 0,129261364                          & 26                                       \\ \hline
-12                                      & 6,589                               & 0,115648674                          & 23                                       \\ \hline
-13                                      & 6,082                               & 0,104130245                          & 21                                       \\ \hline
-14                                      & 5,647                               & 0,094257305                          & 19                                       \\ \hline
-15                                      & 5,271                               & 0,085700758                          & 17                                       \\ \hline
-16                                      & 4,941                               & 0,078213778                          & 15                                       \\ \hline
-17                                      & 4,651                               & 0,07160762                           & 14                                       \\ \hline
-18                                      & 4,392                               & 0,06573548                           & 13                                       \\ \hline
-19                                      & 4,161                               & 0,060481459                          & 12                                       \\ \hline
-20                                      & 3,953                               & 0,055752841                          & 11                                       \\ \hline
-21                                      & 3,765                               & 0,051474567                          & 10                                       \\ \hline
-22                                      & 3,594                               & 0,047585227                          & 9                                        \\ \hline
-23                                      & 3,438                               & 0,044034091                          & 9                                        \\ \hline
-24                                      & 3,294                               & 0,040778883                          & 8                                        \\ \hline
-25                                      & 3,163                               & 0,037784091                          & 7                                        \\ \hline
-26                                      & 3,041                               & 0,035019668                          & 7                                        \\ \hline
-27                                      & 2,928                               & 0,032460017                          & 6                                        \\ \hline
-28                                      & 2,824                               & 0,030083198                          & 6                                        \\ \hline
-29                                      & 2,726                               & 0,027870298                          & 6                                        \\ \hline
-30                                      & 2,635                               & 0,025804924                          & 5                                        \\ \hline
-31                                      & 2,550                               & 0,023872801                          & 5                                        \\ \hline
-32                                      & 2,471                               & 0,022061435                          & 4                                        \\ \hline
-33                                      & 2,396                               & 0,020359848                          & 4                                        \\ \hline
-34                                      & 2,325                               & 0,018758356                          & 4                                        \\ \hline
-35                                      & 2,259                               & 0,017248377                          & 3                                        \\ \hline
-36                                      & 2,196                               & 0,015822285                          & 3                                        \\ \hline
-37                                      & 2,137                               & 0,01447328                           & 3                                        \\ \hline
-38                                      & 2,081                               & 0,013195275                          & 3                                        \\ \hline
-39                                      & 2,027                               & 0,011982809                          & 2                                        \\ \hline
-40                                      & 1,977                               & 0,010830966                          & 2                                        \\ \hline
-41                                      & 1,928                               & 0,00973531                           & 2                                        \\ \hline
-42                                      & 1,882                               & 0,008691829                          & 2                                        \\ \hline
-43                                      & 1,839                               & 0,007696882                          & 2                                        \\ \hline
-44                                      & 1,797                               & 0,006747159                          & 1                                        \\ \hline
-45                                      & 1,757                               & 0,005839646                          & 1                                        \\ \hline
-46                                      & 1,719                               & 0,004971591                          & 1                                        \\ \hline
-47                                      & 1,682                               & 0,004140474                          & 1                                        \\ \hline
-48                                      & 1,647                               & 0,003343987                          & 1                                        \\ \hline
-49                                      & 1,614                               & 0,002580009                          & 1                                        \\ \hline
-50                                      & 1,581                               & 0,001846591                          & 0                                        \\ \hline
+Periodetid & Hastighed(m/s) & Bremselængde(m) & Bremselængde(pulse) & Prescalar \\ \hline
+76         & 4,161          & 0,034572368     & 7                   &           \\ \hline
+77         & 4,107          & 0,033344156     & 7                   &           \\ \hline
+78         & 4,054          & 0,032147436     & 6                   &           \\ \hline
+79         & 4,003          & 0,030981013     & 6                   &           \\ \hline
+80         & 3,953          & 0,02984375      & 6                   &           \\ \hline
+81         & 3,904          & 0,028734568     & 6                   &           \\ \hline
+82         & 3,857          & 0,027652439     & 5                   &           \\ \hline
+83         & 3,810          & 0,026596386     & 5                   &           \\ \hline
+84         & 3,765          & 0,025565476     & 5                   &           \\ \hline
+85         & 3,721          & 0,024558824     & 5                   &           \\ \hline
+86         & 3,677          & 0,023575581     & 5                   &           \\ \hline
+87         & 3,635          & 0,022614943     & 4                   &           \\ \hline
+88         & 3,594          & 0,021676136     & 4                   &           \\ \hline
+89         & 3,553          & 0,020758427     & 4                   &           \\ \hline
+90         & 3,514          & 0,019861111     & 4                   &           \\ \hline
+91         & 3,475          & 0,018983516     & 4                   &           \\ \hline
+92         & 3,438          & 0,018125        & 4                   &           \\ \hline
+93         & 3,401          & 0,017284946     & 3                   &           \\ \hline
+94         & 3,364          & 0,016462766     & 3                   &           \\ \hline
+95         & 3,329          & 0,015657895     & 3                   &           \\ \hline
+96         & 3,294          & 0,014869792     & 3                   &           \\ \hline
+97         & 3,260          & 0,014097938     & 3                   &           \\ \hline
+98         & 3,227          & 0,013341837     & 3                   &           \\ \hline
+99         & 3,194          & 0,01260101      & 2                   &           \\ \hline
+100        & 3,163          & 0,011875        & 2                   &           \\ \hline
+101        & 3,131          & 0,011163366     & 2                   &           \\ \hline
+102        & 3,100          & 0,010465686     & 2                   &           \\ \hline
+103        & 3,070          & 0,009781553     & 2                   &           \\ \hline
+104        & 3,041          & 0,009110577     & 2                   &           \\ \hline
+105        & 3,012          & 0,008452381     & 2                   &           \\ \hline
+106        & 2,983          & 0,007806604     & 2                   &           \\ \hline
+107        & 2,956          & 0,007172897     & 1                   &           \\ \hline
+108        & 2,928          & 0,006550926     & 1                   &           \\ \hline
+109        & 2,901          & 0,005940367     & 1                   &           \\ \hline
+110        & 2,875          & 0,005340909     & 1                   &           \\ \hline
+111        & 2,849          & 0,004752252     & 1                   &           \\ \hline
+112        & 2,824          & 0,004174107     & 1                   &           \\ \hline
+113        & 2,799          & 0,003606195     & 1                   &           \\ \hline
+114        & 2,774          & 0,003048246     & 1                   &           \\ \hline
+115        & 2,750          & 0,0025          & 0                   &           \\ \hline
+116        & 2,726          & 0,001961207     & 0                   &           \\ \hline
+117        & 2,703          & 0,001431624     & 0                   &           \\ \hline
+118        & 2,680          & 0,000911017     & 0                   &           \\ \hline
+119        & 2,658          & 0,00039916      & 0                   &           \\ \hline
+120        & 2,635          & -0,000104167    & 0                   &           \\ \hline
 \end{tabular}
 \caption{Table med udregnede værdier for hurtig brug}
 \label{lookuptable}

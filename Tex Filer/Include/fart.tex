@@ -1,10 +1,10 @@
-\section{Måling af farten - Wheelspeed Sensor}
+\section{Omdrejningssensor - Måling af farten}
 \label{fartmål}
-I dette afsnit beskrives der hvordan en wheelspeed sensor udnyttes til at beregne farten bilen kører med. Der vil både blive beskrevet hardwaren til sensoren samt hvordan den softwaremæssigt bruger sensoren. Farten bliver brugt til at mappe banen samt kører med konstant hastighed. Disse funktioner vil blive beskrevet i afsnit \todo{indsæt afsnit for konstant hastighed og mapning}. \\
+I dette afsnit beskrives hvordan en omdrejningssensor udnyttes til at beregne hastigheden bilen kører med. Der vil både blive beskrevet hardwaren til sensoren samt hvordan den softwaremæssigt bruger sensoren. Farten bliver brugt til at mappe banen samt kører med konstant hastighed, som er beskrevet i afsnit \ref{mapning} og \ref{sving} \\
 
 \subsection{Fart Hardware - TCST1230}
 \label{fartmål_hardware}
-Vi benytter TCST1230, som er en optisk sensor, til at lave en fotogate. Sensoren består af en fotocelle og en vifte med 16 blade på. Hjulet med vifterne sidder på motorens akse og hver gang aksen drejer en omgang vil den bryde fotosensorens lys XX gange. Hver gang lyset brydes så fås en puls fra fotosensoren som sendes videre til micro-controlleren. Dette er illustreret i figur \ref{wheelspeed3D} 
+Vi benytter TCST1230, som er en optisk sensor, til at lave en fotogate. Sensoren består af en fotocelle og en vifte med 1 blad på. Hjulet med vifterne sidder på motorens aksle og hver gang akslen drejer en omgang vil den bryde fotosensorens lys 1 gang. Hver gang lyset brydes fås en puls fra fotosensoren, som sendes videre til microcontrolleren. Dette er illustreret i figur \ref{wheelspeed3D}.
 
 \begin{figure}[h!]
 \center
@@ -13,51 +13,50 @@ Vi benytter TCST1230, som er en optisk sensor, til at lave en fotogate. Sensoren
 \label{wheelspeed3D}
 \end{figure}
 
-Efter test er der sat flere blade på viften da for at præcist at kunne bruge målingerne fra sensoren krævede det en højere opløsning. Dette fås ved at tilføje flere blade til viften så vi får flere pulses pr. omdrejning af aksen. Der er således nu så 4 blade på viften hvilket giver os 4 pulse pr. akse omdrejning. Dette svarer til 16,8 pulses pr. hjul omdrejning. \\
-Se afsnit \ref{beregn_gearing} for udregningen af gearingen. \\
-Dette giver en opløsning der er 4 gange bedre, end kun at have 1 vifte. \\
-For bedre opløsning kunne der sættes flere vifter på, men kommer der for mange vifter på, vil det dog blive svært for sensoren at aflæse vifterne da deres mellemrum til sidst vil blive meget småt. Jo flere vifter der kommes på, jo sværere bliver det også at bygge ringen med vifterne. \\
+Efter test viste det sig at sensoren havde brug for en højre opløsning. Dette opnås ved at tilføje flere blade til viften så fås flere pulser pr. omdrejning. Der er således nu fire blade på viften, hvilket giver os fire pulser pr. aksel omdrejning. Dette svarer til 16,8 pulser pr. hjulomdrejning. \\
+Se afsnit \ref{beregn_gear} for udregningen af gearingen. \\
+Fire vifter giver en opløsning der er fire gange bedre, end kun at have en vifte. \\
+For bedre opløsning kunne der sættes flere vifter på, men kommer der for mange vifter på, vil det dog blive svært for sensoren at aflæse vifterne. Dette skyldes at mellemrummet til sidst vil blive meget småt. Jo flere vifter der tilføjes, jo sværere bliver det også at bygge ringen med vifterne. \\
 
-Der bliver i dette tilfælde valgt at have 4 vifter da det kunne bygges forholdsvis let og det giver en opløsning der er høj nok til hvad vi ønskede. Ved blot 1 vifte kørte vi 2cm per omdrejning. Da vi ved hjulet kører 0,2381 omgange pr. motor omdrejning så kan længden den kører mellem hver puls udregnes ved at multiplicerer hjul omdrejninger med hjulets omkreds:
+I dette tilfælde anvendes en ring med fire vifter da det kunne laves forholdsvis let, og det giver en opløsning, der er høj nok til hvad der ønskes. Ved blot 1 vifte kørte hjulet 2cm per omdrejning. Da hjulet kører 0,2381 omgange pr. motoromdrejning så kan længden bilen kører mellem hver puls udregnes ved at multiplicere hjulomdrejninger med hjulets omkreds:
 \begin{align*}
-0,2381*8,5 = 2,02 cm
+0,2381*8,5cm = 2,02 cm
 \end{align*}
-Dette er ikke ret præcist da vi så kun kan aflæse længden/farten i intervaller af 2cm. Det blev så sat 4 vifter på og dette giver en præcision på:
+Dette er ikke ret præcist da længden og farten kun af aflæses i intervaller af 2cm. Ved fire vifter kører bilen pr. puls:
 \begin{align*}
-(0,2381/4)* 8,5 = 0,51cm
+(\frac{0,2381}{4})* 8,5cm = 0,51cm
 \end{align*}
 Dette er markant bedre da den nu kun kører 0,51cm før den får en puls og udregner længde og hastighed. Så der fås flere mindre intervaller der kan tjekkes og reageres på. \\ 
 
-Som det kan ses på tegningen af kredsløbet i figur \ref{wheelspeedTegning} så er der sat nogle modstande og en kondensator på sensorens kredsløb. \\
+Som det kan ses på tegningen af kredsløbet i figur \ref{wheelspeedTegning} er der sat nogle modstande og en kondensator på sensorens kredsløb. \\
 
 \begin{figure}[h!]
 \center
-\includegraphics[scale=0.65]{./Graphics/TCST1230}
+\includegraphics[scale=0.75]{./Graphics/TCST1230}
 \caption{Kredsløbet til TCST1230 Sensoren}
 \label{wheelspeedTegning}
 \end{figure}
 
-Modstanden R3 i figur \ref{wheelspeedTegning} er der for at sørge for at strømmen over dioden D2 ikke bliver højere end den kan tåle. Dioden kan nemlig kun klarer 30mA ifølge databladet. \todo{indsæt datablad}\\
+Modstanden R3 i figur \ref{wheelspeedTegning} er der for at strømmen over dioden D2 ikke bliver større end dioden kan tåle. Dioden kan kun klare 30mA ifølge databladet. \todo{indsæt datablad}\\
 
-Modstanden R4 virker som en pulldown modstand der sørger for at hive signalet langt nok ned, når fototransistoren ikke modtager lys, så der er logisk lavt signal. \\
+Modstanden R4 virker som en pulldown\footnote{Se ordliste \ref{ordliste}} modstand der sørger for at holde signalet lavt, når fototransistoren ikke modtager lys. \\
 
-Kondensatoren C1 benyttes til at sorterer små signaler fra. Hvis signalet ”hopper” frem og tilbage ved en overgang fra logisk lavt til logisk højt vil kondensatoren tage de små hurtige skift og sorterer dem fra. På denne måde fjernes en del af støjen.  
-Der blev gennem oscilloskop observeret pral på sensoren ved TTL signal behandling. Der var benyttet en forkert metode til at opbygge sensoren på. Der var anvendt en struktur som forårsagede at diode spændingen over fototransistoren ikke kunne komme under 0.6V. Der blev derfor udarbejdet en anden struktur som set i databadet s. 3. \todo{TCST1230 s. 3} Modstanden benyttet til dioden blev udregnet vha. Ohms lov og ved at sætte strømmen lig 30mA. Dette resulterede i en modstand for R3 på 120 Ohm. \\
+Kondensatoren C1 benyttes til at sortere små signaler fra. Hvis signalet ”hopper” frem og tilbage ved en overgang fra logisk lavt til logisk højt, vil kondensatoren tage de små hurtige skift og sortere dem fra. På denne måde fjernes en del af støjen.  
+Ud fra Ohms lov og databladet\footnote{Se datablad som ligger i bilag XX } er modstandene bestemt, så microcontrolleren opfanger signalerne fra sensoren som højt og lavt. \\ \todo{indsæt datablad ref}
 
-R4, som er pulldown modstanden, blev beregnet ved at kigge på figur 8 i databladet \todo{indsæt datablad}. Her blev modstanden udregnet til ca. 4K Ohm. Der anvendes her en 3.9K Ohm modstand \\
 
 \subsection{Fart Software}
 \label{fartmål_software}
-Sensorens output er sat på ”PB1” og ”PD3” som går til ”Timer1” og ”INT0” i micro-controlleren. Så hver gang den får en puls så bliver timeren og interruptet triggeret. Timeren bliver benyttet til at finde længden den har kørt. Dette er beskrevet i afsnit \ref{afstandmål_software}. \\
+Sensorens output er sat på ”PB1” og ”PD3”\footnote{PB1 og PD3 er indgange på microcontrolleren}, som går til ”Timer1” og ”INT0”\footnote{INT0 er en interrupt indgang på microcontrolleren} i microcontrolleren. Hver gang den får en puls  bliver timeren og interruptet triggeret. Timeren bliver benyttet til at finde længden bilen har kørt. Dette er beskrevet i afsnit \ref{afstandmaal}. \\
 
-Interruptet benyttes sammen med Timer0 til at finde farten. Timer 0 er sat op så den inkrementer hvert 0.000064 sekund. Hvilket svarer til den inkrementerer hvert 64. mikrosekund. Dette er sat ved at bruge en prescale på 1024. Da clock frekvensen på micro-processoren er 16MHz udregnes det således: \\
+Interruptet benyttes sammen med Timer0 til at finde farten. Timer0 er sat op så den inkrementer hvert 0,000016 sekund. Hvilket svarer til den inkrementerer hvert 16. mikrosekund. Dette er sat ved at bruge en prescale på 256. Da klokfrekvensen på microcontrolleren er 16MHz udregnes det således:
 \begin{align*}
-1/(16 000 000 / 1024) = 0,000064 sek = 64 mikrosekunder 
+\frac{256}{16 000 000Hz} = 0,000016 s = 16 \mu s 
 \end{align*}
 
-Dette bruges for at finde tiden mellem pulses som kan benyttes som udtryk for farten. Timeren er ligeledes sat op så hvis der er overflow i Timer0 så kaldes et andet interrupt der blot nulstiller timeren og den fortsætter så. \\
+Dette bruges for at finde periodetiden, som benyttes til at udtrykke farten. Et overflow vil kun forekomme hvis noget går galt og bilen står helt stille, eller kører under 1.2\(m/s\). Hvis der er overflow i Timer0, kaldes et andet interrupt, der sætter en konstant hastighed. \\
 
-Flowdiagrammet i figur \ref{fart_chart} viser processen hver gang Interruptet bliver kaldt. Hvilket sker hver gang sensoren sender en puls. \\
+Flowdiagrammet i figur \ref{fart_chart} viser processen hver gang interruptet bliver kaldt. Hvilket sker hver gang sensoren sender en puls. \\
 
 \begin{figure}[h!]
 \center
@@ -66,9 +65,9 @@ Flowdiagrammet i figur \ref{fart_chart} viser processen hver gang Interruptet bl
 \label{fart_chart}
 \end{figure}
 
-Der slåes først interrupts fra globalt, for at dette interrupt ikke bliver afbrudt af et andet interrupt. Herefter indlæses den værdi tælleren er nået til. Denne værdi gemmes i registeret R26, som er vores ”målt fart” register. Så ligges der 0 ind i Timer0, for at nulstille den. På den måde får vi hvor mange gange der er gået 64 mikrosekunder på 1 puls. F.eks. hvis der går 10 optællinger mellem timer puls, så har bilen farten: 7,9 m/s. \\
-Dette kan ses i lookup table i afsnit \todo{henvis til lookup table og sørg for table har korrekte enheder.}
+Der slås først interrupts fra globalt, for at dette interrupt ikke bliver afbrudt af et andet interrupt. Herefter indlæses den værdi tælleren er nået til. Denne værdi gemmes i vores ”målt fart” register. Derefter nulstilles Timer0. På den måde får vi hvor mange gange der er gået 16 mikrosekunder på 1 puls. F.eks. hvis der går 80 optællinger mellem timer puls, så har bilen farten: \(~4 m/s\). \\
+Dette kan ses i lookup table i afsnit \ref{lookup}.
 
-Inden interruptet sluttes kaldes nogle labels der benyttes til at bestemme hvor på banen den er. Disse er beskrevet i afsnit XX. \todo{indsæt afsnit label} \\
+Inden interruptet sluttes læses accelerometeret, som er nærmere beskrevet i afsnit \ref{svingsensor}. \\
 
-Til sidst så slås interrupts til igen og der returneres til der koden var nået til, indtil næste interrupt bliver kaldt.  
+Til sidst slås interrupts til igen og koden fortsætter hvor den blev afbrudt af interruptet.  

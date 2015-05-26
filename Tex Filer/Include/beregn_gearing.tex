@@ -1,8 +1,8 @@
 \subsection{Beregning af gearing}
 \label{beregn_gear}
 
-For at udregne hvor langt hjulet drejer på en puls og hvor mange pulse der skal til for at hjulet drejer en hel omgang skal gearing udregnes. \\
-Dette udregnes ved at kigger på de 2 tandhjul som er henholdsvis gear 1 og 2. Der kigges på begge tandhjul og deres tænder tælles. Ved at dividerer værdierne fås forholdet mellem tandhjulene. \\
+For at udregne hvor langt hjulet drejer på en puls og hvor mange pulser der skal til for at hjulet drejer en hel omgang skal gearing udregnes. \\
+Dette udregnes ved at kigge på de 4 tandhjul, som er henholdsvis gear 1 og 2. Der kigges på begge gearing og deres tænder tælles. Ved at dividere værdierne fås forholdet mellem tandhjulene. \\
 Dette har givet følgende forhold:
 \begin{align*}
 Gear1 = 10 / 14 = 0,7143 \\
@@ -14,15 +14,16 @@ Gear1*Gear2 = 0,7143 * 0,3333 = 0,2381
 \end{align*}
 
 Dette betyder at når motoren har drejet en omgang så har hjulet drejet \(0,2381\) omgange.
-Når sensoren giver en puls, har hjulet derfor kørt: \(\frac{0,2381}{4} = 0,0595\) \\
-Da hjulet er 8.5 cm i omkreds så svarer 1 puls til: \(0,0595*8,5 = 0,50595\)
+Når sensoren giver en puls, har hjulet derfor drejet: \(\frac{0,2381}{4} = 0,0595 omgange\) \\
+Da hjulet er 8.5 cm i omkreds så svarer 1 puls til: \(0,0595*8,5 = 0,50595 cm\)
 
-\subsubsection{Periode tid ved 4 m/s}
+\subsubsection{Periodetid ved 4 m/s}
 \label{periode_4ms}
-Her udregnes periode tiden for signalet ved en hastighed på 4 m/s:
+Her udregnes periode tiden for signalet ved en hastighed på $4 m/s$:
 \begin{align*}
 \frac{4m/s}{0,085m} = 47,1 RPS
 \end{align*}
+\footnote{Se ordliste i afsnit \ref{ordliste}}
 
 Når hjulet har kørt en omgang har motoren altså kørt:
 \begin{align*}
@@ -30,6 +31,6 @@ Når hjulet har kørt en omgang har motoren altså kørt:
 \end{align*}
 
 Så motoren kører: \(47,1 RPS * 4,2 = 197,82 RPS = 11869,2 RPM \) \\
-Så der er: \(197,82 RPS *4 = 791,28 PPS \) \\
-\(1/791,28 = 0,001265 sekunder \) \\
-Dette giver altså en periode tid på: \(1,26 ms\)
+Så der er: \(197,82 RPS *4 = 791,28 PPS \) \footnote{Se ordliste i afsnit \ref{ordliste}} \\
+\(1/791,28 = 0,001265 s \) \\
+Dette giver altså en periodetid på: \(1,26 ms\) ved en hastighed på 4 $m/s$

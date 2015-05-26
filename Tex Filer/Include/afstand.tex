@@ -1,22 +1,22 @@
-\section{Måling af afstand - Wheelspeed Sensor}
+\section{Omdrejningssensor - Måling af afstand}
 \label{afstandmaal}
-I dette afsnit beskrives hvordan bilen måler hvor langt den er kørt. Her benyttes den samme sensor som bruges til udregning af farten der køres med i afsnit \ref{fartmål}. \\
-Afstanden bilen har kørt bruges til at mappe banen som der kan læses nærmere om i afsnit XX \todo{indsæt afnist}
+I dette afsnit beskrives, hvordan bilen måler, hvor langt den har kørt. Her benyttes den samme sensor, som bruges til udregning af farten. Læs mere i afsnit \ref{fartmål}. \\
+Afstanden bilen har kørt bruges til at mappe banen. Hvilket beskrives i afsnit \ref{mapning}.
 
 \subsection{Afstand Hardware - TCST1230}
 \label{afstandmaal_hardware}
-Da sensoren er den samme som benyttes til måling af fart vil dens hardware ikke blive beskrevet her. Der henvises i stedet til afsnit \ref{fartmål_hardware} \\
-Den eneste ændring på hardwaren er at sensores udgangssignal til micro-controlleren går på indgang ”PB1.”
+Da sensoren er den samme, som benyttes til måling af fart, vil dens hardware ikke blive beskrevet her. Der henvises i stedet til afsnit \ref{fartmål_hardware} \\
+Den eneste ændring på hardwaren er at sensorens udgangssignal til microcontrolleren er forbundet med indgang ”PB1”.
 
 \subsection{Afstand Software}
 \label{afstandmaal_software}
-Hver gang sensoren sender en puls til ”PB1” på micro-controlleren så vil Timer1 inkrementer med en. Timer1 er valgt da det er en 16bit timer og derfor kan der køres 327,7 meter før timeren giver overflow. Udregningen er som følger: 
+Hver gang sensoren sender en puls til ”PB1” på microcontrolleren vil Timer1 inkrementere med en. Timer1 er valgt da det er en 16bit timer og derfor kan der køres 327,7 meter før timeren giver overflow. Udregningen er som følger: 
 \begin{align*}
-16bit = 2^16 * 0.5cm (pr. puls) = 32768 cm = 327,7 meter
+16bit = 2^{16} * 0,5cm (pr. puls) = 32768 cm = 327,7 m
 \end{align*}
-Dette er rigeligt til formålet, da efter hver lige strækning vil tælleren nulstilles. \\
+Dette er rigeligt til formålet, da tælleren vil blive nulstillet efter hver lige strækning. \\
 
-Da der vides hvor mange pulses der går på en hjul omdrejning, nemlig \(16,8\), så kan der ved at tælle pulses udregnes hvor langt den har kørt. For udregning af antal pulses pr. omdrejning se afsnit \ref{beregn_gear} \\
+Antallet af pulser på en hjulomdrejning er \(16,8\). Ved at tælle antallet af pulser kan det udregnes hvor langt bilen har kørt.  For udregning af antal pulser pr. omdrejning: se afsnit \ref{beregn_gear}. \\
 
-Timer1 er opsat med en prescale der tager udgangspunkt i et ekstern input. Dette betyder at det eksterne signal benyttes som clock-frekvens med rising edge. Rising edge betyder at en periode tager udgangspunkt i signalet på vej op i stedet for på vej ned. 
+Timer1 er opsat så den kører på en ekstern klokfrekvens. Den eksterne klokfrekvens er signalet fra omdrejningstælleren. Timeren er sat til at trigge på rising edge\footnote{Se ordliste i afsnit \ref{ordliste}}. 
 
