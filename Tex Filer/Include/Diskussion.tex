@@ -1,0 +1,27 @@
+\section{Diskussion}
+Ved stregsensoren var det vigtigt, at afstanden til banen var så lille som muligt, for at sikre at den hvide linje bliver detekteret. En forbedring kunne være en komparator, for at trigger punktet kunne indstilles til brugerens ønske.\\
+Omdrejningssensoren kunne forbedres ved at montere en skive med flere vifter. Endvidere kunne der bruges et filtersystem så outputtet ville være lettere for microcontrolleren at detektere. Man kunne også have monteret to omdrejningssensorer. På denne måde ville det være muligt at bestemme hvilken vej akslen drejer. Dette kunne være en ekstra sikkerhed i forbindelse med opbremsningen. De to sensorer ville også give mulighed for at måle den kørte længde med øget præcision.\\
+Lowpassfilteret som sidder mellem accelerometeret og microcontrolleren kunne højest sandsynlig forbedres. Cut-Off frekvensen som på nuværende tidspunkt er på omkring 1500 Hz skulle have været tilpasset vores behov. Igen kunne man have anvendt komparatorer. Disse kunne have været koblet til interrupt pins på microcontrolleren. På denne måde ville det ikke være nødvendigt at læse accelerometeret hele tiden.\\
+Ud fra vores beregninger ville elektromagneten medføre en forringelse af omgangstiden. Ydermere stemmer beregningerne ikke overens med kraftmålingerne af elektromagneten. Det er svært at vide hvorfor at denne forskel er der. Forskellen skyldes bl.a. fluxspredning, fluxfringing, materiale permeabilitet og hvor godt magneten er vundet. F.eks. er det svært at finde permeabiliten for materialet.\\
+
+\section{Konklusion}
+Det er lykkedes at konstruere og programmere en scalextrix bil så den kan køre autonomt på en vilkårlig bane. Der er implimenteret en kommunikationsprotokol. Denne tillader at bilens hastighed kan justeres. Det er også muligt at bede bilen om forskellige værdier som f.eks. dens hastighed eller centripetalkraften rundt i svingene. Et problem ved protokollen består i at den skal modtage tre bytes. Hvis bilen f.eks. kun modtager to bytes vil hele programmet stoppe indtil de har modtaget sidste byte.  
+De optiske sensorer vi benytter lever op til de krav vi stillede dem. Den hvide linje detekteres hver omgang og alle pulserne opfanges af omdrejningssensoren. Accelerometeret er meget støjfølsomt og der skal derfor laves meget efterbehandling af outputtet. Man kunne have brugt mere tid på at behandle dataen, såsom filtre. 
+Generelt set er projektet opfyldt, da vi har et færdigt produkt, der er i stand til at køre en vilkårlig bane og øge omgangstiderne gennem intelligent valg af bremsepunkter. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@ For at bilen kan detekterer og gemme at der er et sving, skal den udstyres med e
 \end{figure}
 
 \subsection{Hardware - MMA1270KEG}
-Det analoge accelerometer er opbygget som vist på figur \ref{Acceleration}. Det kan ses som tre plader, hvor de to yderste er fikseret og den midterste kan bevæge sig. Den midterste plade bevæger sig derved med kraften og kapaciteten ændres mellem den midterste og de to fikserede plade. Den samlede kapacitans er konstant. Dette kan beskrives ved $(C=\frac{A\epsilon}{D})$, hvor A er arealet af pladerne, $\epsilon$ er den diaelektriske konstant og D er afstanden mellem den midterste plade og en af de to fikserede plader. Denne kapacitet bliver behandlet inde i accelerometeret af et kredsløb\footnote{Se side 4 i datablad for MMA1270KEG}. Dette kredsløb sørger for at output signalet på accelerometeret er proportionalt med kraften. \todo{indsæt ref til bilag}
+Det analoge accelerometer er opbygget som vist på figur \ref{Acceleration}. Det kan ses som tre plader, hvor de to yderste er fikseret og den midterste kan bevæge sig. Den midterste plade bevæger sig derved med kraften og kapaciteten ændres mellem den midterste og de to fikserede plade. Den samlede kapacitans er konstant. Dette kan beskrives ved $(C=\frac{A\epsilon}{D})$, hvor A er arealet af pladerne, $\epsilon$ er den diaelektriske konstant og D er afstanden mellem den midterste plade og en af de to fikserede plader. Denne kapacitet bliver behandlet inde i accelerometeret af et kredsløb\footnote{Se side 4 af datablad for MMA1270KEG i bilag \ref{MMA1270KEG}}. Dette kredsløb sørger for at output signalet på accelerometeret er proportionalt med kraften.
 
 \begin{figure}[h!]
 \centering
@@ -19,10 +19,9 @@ Det analoge accelerometer er opbygget som vist på figur \ref{Acceleration}. Det
 \label{diagram_acc}
 \end{figure}
 
-Ved 0G er outputtet typisk på 2,5V og en sensitivitet på $750\frac{mV}{G}$.\footnote{Se Tabel 2, side 3 i databladet for accelerometeret} \todo{datablad henvisning i bilag for fodnote} \\
+Ved 0G er outputtet typisk på 2,5V og en sensitivitet på $750\frac{mV}{G}$.\footnote{Se Tabel 2, side 3 i databladet for MMA1270KEG i bilag \ref{MMA1270KEG}} \\
 Output signalet er et signal der ligge mellem 0-5V og kan læses med en ADC af microcontrolleren.
 Der er lavet er Lowpassfilter på output signalet fra accelerometeret, for at sortere de høje frekvenser fra. Der blev konstrueret det samme Lowpassfilter som blev forslået i databladet for sensoren. Altså en modstand på 1K\ohm og en capacitor på 100 nF. Dette giver en cut-off frekvens på:\\$f_{c}=\frac{1}{2\pi\tau}=\frac{1}{2\pi*RC}=1591.5 Hz$\\
-
 Dette Lowpassfilter blev dog ikke optimeret grundet tidsmangel og der tages derfor højde for dette i koden.\\
 
 \subsection{Software}
@@ -32,15 +31,11 @@ Når accelerometeret skal læses kaldes en subrutine. Denne subrutine sætter re
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.25]{./Graphics/banekorsel}
-\caption{Graf over accelerometerdata fra testbanen. Billedet af testbane ses i bilag XX}
+\caption{Graf over accelerometerdata fra testbanen. Testbane kan ses i bilag \ref{testbanebillede}}
 \label{testbanegraf}
 \end{figure}
 
-\todo{indsæt bilag billede af testbane}
-
 Det ses at svingende er til at detektere, og farten aftager rundt i svingene. Dette diskuteres i afsnit \ref{sving}. På figur \ref{testbanegraf} ses et sving hvor den øvre grænse er indtegnet.\\
-
-
 
 I figur \ref{testbanegraf} ses det at når bilen kører lige ud, er accelerometerværdien mellem den øvre grænsen (rød) og den nedre grænse (gul). I nogle tilfælde vil der grundet støj fås fejlmåling. Dette bliver der taget højde for ved at der skal være et antal på hinanden følgende målinger, som ligger under den øvre grænse, før det konstateres at bilen er ude af svinget. Denne metode bruges også i starten af et sving, da dette vil eliminere muligheden for at bilen tror den er i et sving, hvis der blot er tale om støj ved ligeud kørsel.\\
 

@@ -4,7 +4,7 @@
 %====== Table Of contents =============================================
 %======================================================================
 \tableofcontents
-\listoftodos
+%\listoftodos
 
 
 
@@ -44,10 +44,9 @@ Hvordan opbygges og programmeres en elektrisk bil til selv at kunne køre hurtig
 \item Hvordan bremser bilen best muligt?
 \end{itemize}
 
+\newpage
 \subsubsection{Afgrænsning}
 I denne opgave begrænser vi os til at bygge sensorkredsløb og programmere microcontrolleren til den elektriske bil. Vi skal ikke bygge bilen fra bunden, men modificere en eksisterende model til at kunne styres gennem vores microcontroller. Bluetooth kommunikationsprotokollen er også bestemt for os, men vi skal selv implementere denne og kan også udvide den. \\
-
-Derudover laver vi et lille program der kan snakke sammen med bilen til testing og datamodtagelse. Dette program er skrevet i Visual Basic .NET for ikke at bruge for meget tid og energi på det, da det kun benyttes til udvikling af bilen. \\
 
 Vores projekt kan derfor fortolkes til at programmere en microcontroller til at modtage signaler fra sensorer og derudfra kortlægge en bane og kontrollere motoren for at opnå den hurtigste omgangstid. 
 
@@ -58,5 +57,14 @@ Den 29. maj 2015 afholdes Pole Position konkurrencen. Her vinder det hold, som h
 
 
 \subsection{Rapportstruktur}
-Projektet består af flere dele, hvor microcontrolleren er i centrum. Delene har forskellige realationer til microcontrolleren som \ref{struktur} illustrerer.\\
-\todo{SRAR REKT}
+Projektet består af flere dele, hvor microcontrolleren er i centrum. Delene har forskellige realationer til microcontrolleren som \ref{Strategi} illustrerer.\\
+
+\begin{figure}[h!]
+\center
+\includegraphics[scale=0.4]{./Graphics/Strategi}
+\caption{Overblik over hovedemner, dvs. strategi}
+\label{Strategi}
+\end{figure}
+
+Microntrolleren styre forsyningen til motoren. Omdrejningssensor tæller motorens omdrejninger og sender informationer tilbage til microcontrolleren. Svingsensor sender informationer om til processoren om sving. Stregsensoren detektere startlinjen og informere controlleren om dette. Microcontrolleren styrer forsyningen til elektromagneten. Derudover er der en tovejs kommunikation mellem bluetooth-modulet og microcontrolleren. \\
+Udover at blokkene til sammen beskriver produktet, giver dette også en oversigt over rapportens opbygning. De enkelte dele udgør hovedafsnittene i rapporten. Vha. dette kort kan læseren nemt navigere rundt i rapporten uden at miste overblik. 

@@ -22,6 +22,7 @@
 % =====================================================================
 %====== Primære afsnit ================================================
 %======================================================================
+\newpage
 \input{Include/Startlinje}
 
 \input{Include/fart}
@@ -32,18 +33,22 @@
 
 \input{Include/Accelerometer_sving}
 
+\newpage
 \input{Include/Elektromagnet}
 
 \input{Include/Mapning}
 
+\newpage
 \input{Include/sving_bremse}
 
+\newpage
 \input{Include/kommunikation}
 
 % =====================================================================
 %====== Konklusion ====================================================
 %======================================================================
-\include{Konklusion}
+\newpage
+\input{Include/Diskussion}
 
 \input{Include/Litteraturliste}
 
@@ -55,12 +60,15 @@
 \section{Bilag}
 \input{Include/Elektromagnet-kraftmåling}
 
+\newpage
 \input{Include/beregn_gearing}
 
 \input{Include/lookup-bremse}
 
-\includepdf[pages=1,scale=0.8,pagecommand=\section{MMA1270KEG Datablad} \label{MMA1270KEG}]{Include/MMA1270KEG_udklip.pdf}
+\input{Include/testbane}
 
-\includepdf[pages=1,scale=0.8,pagecommand=\section{TCST1230 Datablad} \label{TCST1230}]{Include/tcst1230_Udklip.pdf}
-\includepdf[pages=2-4, scale=0.8]{Include/tcst1230_Udklip.pdf}
+\includepdf[pages=1,scale=0.75,pagecommand=\subsection{Udrag af MMA1270KEG datablad} \label{MMA1270KEG}]{Include/MMA1270KEG_udklip.pdf}
+
+\includepdf[pages=1,scale=0.75,pagecommand=\subsection{Udrag af TCST1230 datablad} \label{TCST1230}]{Include/tcst1230_Udklip.pdf}
+\includepdf[pages=2-4, scale=0.75,pagecommand=\label{TETE}]{Include/tcst1230_Udklip.pdf}
 \end{document}

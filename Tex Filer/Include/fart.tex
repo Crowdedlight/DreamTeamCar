@@ -37,12 +37,12 @@ Som det kan ses på tegningen af kredsløbet i figur \ref{wheelspeedTegning} er 
 \label{wheelspeedTegning}
 \end{figure}
 
-Modstanden R3 i figur \ref{wheelspeedTegning} er der for at strømmen over dioden D2 ikke bliver større end dioden kan tåle. Dioden kan kun klare 30mA ifølge databladet. \todo{indsæt datablad}\\
+Modstanden R3 i figur \ref{wheelspeedTegning} er der for at strømmen over dioden D2 ikke bliver større end dioden kan tåle. Dioden kan kun klare 30mA ifølge databladet\footnote{Se udsnit af datablad for TCST1230 i bilag \ref{TCST1230}}.\\
 
 Modstanden R4 virker som en pulldown\footnote{Se ordliste \ref{ordliste}} modstand der sørger for at holde signalet lavt, når fototransistoren ikke modtager lys. \\
 
 Kondensatoren C1 benyttes til at sortere små signaler fra. Hvis signalet ”hopper” frem og tilbage ved en overgang fra logisk lavt til logisk højt, vil kondensatoren tage de små hurtige skift og sortere dem fra. På denne måde fjernes en del af støjen.  
-Ud fra Ohms lov og databladet\footnote{Se datablad som ligger i bilag XX } er modstandene bestemt, så microcontrolleren opfanger signalerne fra sensoren som højt og lavt. \\ \todo{indsæt datablad ref}
+Ud fra Ohms lov og databladet\footnote{Se udsnit af datablad for TCST1230 i bilag \ref{TCST1230}} er modstandene bestemt, så microcontrolleren opfanger signalerne fra sensoren som højt og lavt. \\
 
 
 \subsection{Fart Software}

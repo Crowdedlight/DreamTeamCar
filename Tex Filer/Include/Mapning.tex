@@ -8,10 +8,9 @@ Figur \ref{testbanegraf2} viser den data bilen får fra accelerometeret. Dataen 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.25]{./Graphics/banekorsel}
-\caption{Graf over accelerometerdata fra testbanen. Billedet af testbane ses i bilag XX}
+\caption{Graf over accelerometerdata fra testbanen. Billedet af testbane ses i bilag \ref{testbanebillede}}
 \label{testbanegraf2}
 \end{figure}
-\todo{bilag nr}
 
 Når værdien fra accelerometeret er læst, behandles den af algoritmen, der bestemmer hvorvidt man er i et sving eller kører ligeud. Dette sker ved at sammenholde den læste værdi mod to faste værdier. Accelerometeret ligger, ved 0G, på ca $2.5 V$ (ADC værdien er 128 i decimal) men i praktisk lidt mindre. En ændring i g-kraften, som følge af et sving, vil øge eller sænke spændingen fra accelerometeret. Derfor tjekkes det om accelerometerværdien ligger uden for midterzonen. Midterzonen introduceres pga. støj ved lige ud kørsel. Dette område ligger mellem en ADC-værdi på 110 og 145, hvilket svarer til 2,148 V – 2,832 V. De to 
 sikkerheds marginer ses på figur \ref{testbanegraf2} som den øvre grænse (Rød) og nedre grænse(Gul). Grænserne er fundet ud fra grafen.
