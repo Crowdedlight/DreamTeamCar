@@ -1,6 +1,6 @@
 \section{Svingsensor}
 \label{svingsensor}
-For at bilen kan detekterer og gemme at der er et sving, skal den udstyres med en sensor der kan kende forskel på lige strækninger og sving. Det vides at bilen bliver påvirket af en centripetalkraft, når den kører inde i et sving. For at kunne måle denne kraft, bruges der et accelerometer. Der var to accelerometer til rådighed; et digitalt (LIS35DE) og et analogt (MMA1270KEG). Først blev det digitale valgt, da dette har interrupt pins, som kunne være brugt til intelligent banedetektion. Grundet problemer med kommunikation mellem det digitale accelerometer og microcontrolleren, faldt valget på det analoge accelerometer.
+For at bilen kan detektere og gemme at der er et sving, skal den udstyres med en sensor der kan kende forskel på lige strækninger og sving. Det vides at bilen bliver påvirket af en centripetalkraft, når den kører inde i et sving. For at kunne måle denne kraft, bruges der et accelerometer. Der var to accelerometer til rådighed; et digitalt (LIS35DE) og et analogt (MMA1270KEG). Først blev det digitale valgt, da dette har interrupt pins, som kunne være brugt til intelligent banedetektion. Grundet problemer med kommunikation mellem det digitale accelerometer og microcontrolleren, faldt valget på det analoge accelerometer.
 
 \begin{figure}[h!]
 \center
@@ -21,11 +21,11 @@ Det analoge accelerometer er opbygget som vist på figur \ref{Acceleration}. Det
 
 Ved 0G er outputtet typisk på 2,5V og en sensitivitet på $750\frac{mV}{G}$.\footnote{Se Tabel 2, side 3 i databladet for MMA1270KEG i bilag \ref{MMA1270KEG}} \\
 Output signalet er et signal der ligge mellem 0-5V og kan læses med en ADC af microcontrolleren.
-Der er lavet er Lowpassfilter på output signalet fra accelerometeret, for at sortere de høje frekvenser fra. Der blev konstrueret det samme Lowpassfilter som blev forslået i databladet for sensoren. Altså en modstand på 1K\ohm og en capacitor på 100 nF. Dette giver en cut-off frekvens på:\\$f_{c}=\frac{1}{2\pi\tau}=\frac{1}{2\pi*RC}=1591.5 Hz$\\
+Der er lavet er Lowpassfilter på output signalet fra accelerometeret, for at sortere de høje frekvenser fra. Der blev konstrueret det samme Lowpassfilter som blev forslået i databladet for sensoren. Altså en modstand på 1K\ohm $ $ og en kapacitor på 100nF. Dette giver en cut-off frekvens på:\\$f_{c}=\frac{1}{2\pi\tau}=\frac{1}{2\pi*RC}=1591,5 Hz$\\
 Dette Lowpassfilter blev dog ikke optimeret grundet tidsmangel og der tages derfor højde for dette i koden.\\
 
 \subsection{Software}
-Til at læse sensoren, anvendes en analog indgang på microcontrolleren. ADC'en opsættes med en prescale på 128, da ADC'en max kan køre med 200 kHz og microcontrolleren kører med 16 MHz. \\
+Til at læse sensoren anvendes en analog indgang på microcontrolleren. ADC'en opsættes med en prescale på 128, da ADC'en max kan køre med 200 kHz og microcontrolleren kører med 16 MHz. \\
 Når accelerometeret skal læses kaldes en subrutine. Denne subrutine sætter referencespændningen til 5V og vælger at "PA2" skal læses ind i ADC'en. Derefter venter programmet på at ADC'en er klar til at blive læst. Nå den er klar, læses værdien af ADC'en over i et register, som nu kan bruges til databehandling i programmet.\\
 
 \begin{figure}[h!]
@@ -35,7 +35,7 @@ Når accelerometeret skal læses kaldes en subrutine. Denne subrutine sætter re
 \label{testbanegraf}
 \end{figure}
 
-Det ses at svingende er til at detektere, og farten aftager rundt i svingene. Dette diskuteres i afsnit \ref{sving}. På figur \ref{testbanegraf} ses et sving hvor den øvre grænse er indtegnet.\\
+Det ses at svingene er til at detektere, og farten aftager rundt i svingene. Dette diskuteres i afsnit \ref{sving}. På figur \ref{testbanegraf} ses et sving hvor den øvre grænse er indtegnet.\\
 
 I figur \ref{testbanegraf} ses det at når bilen kører lige ud, er accelerometerværdien mellem den øvre grænsen (rød) og den nedre grænse (gul). I nogle tilfælde vil der grundet støj fås fejlmåling. Dette bliver der taget højde for ved at der skal være et antal på hinanden følgende målinger, som ligger under den øvre grænse, før det konstateres at bilen er ude af svinget. Denne metode bruges også i starten af et sving, da dette vil eliminere muligheden for at bilen tror den er i et sving, hvis der blot er tale om støj ved ligeud kørsel.\\
 

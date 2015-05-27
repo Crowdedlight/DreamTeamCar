@@ -14,9 +14,9 @@ Før nogle af beregningerne kan laves skal massemidtpunktet i bilen findes. Dett
 Efter at have fundet massemidtpunktet, måles afstanden fra punktet til banen. Denne distance benyttes herefter i en formel, der indikerer hvor hurtigt man kan køre i et sving.  \\
 
 \( Fart(v) = (r*g*b/h)^\frac{1}{2} \), \\
-r = radius,\\
-g = tyngdekraft, \\
-b = halvdelen af bilens bredde, \\
+r = radius.\\
+g = tyngdekraft. \\
+b = halvdelen af bilens bredde. \\
 h = afstand mellem massemidtpunkt og banen. \\
 
 For at optimere bilens fysiske egenskaber kan flere ting ændres. Opgaveformuleringen begrænser nogle muligheder såsom slibning af dæk, hvilket giver større overfladeareal og derved større friktion. \\
@@ -49,17 +49,18 @@ Massemidtpunkthøjde = \( 0,02m \), Affjedring = \( [0;0,003m]. \) \\
 
 Når det teoretiske maksimum er fundet skal resultatet implementeres i programmet. Da bilen ikke har et differentiale vil den decelerere i svinget. Derfor er det nødvendigt i programmet at tjekke den reelle hastighed bilen kører og sammenligne med den teoretiske. Dette gøres ved hjælp af omdrejningssensoren. Hvis der går for lang tid mellem pulsene øges bilens hastighed en smule. Hvis der går for kort tid mellem pulsene sænkes bilens hastighed en smule. Denne subrutine eksekveres gennem svinget således at hastigheden hele tiden reguleres til at være tættest på det teoretisk mulige. \\
 
+\newpage
 \section{Bremse}
 \label{bremse}
 En stor del af optimeringen består i at finde det korrekte bremsepunkt. Jo senere der bremses jo hurtigere bliver omgangstiderne. For at finde disse bremsepunkter benyttes formlen: \\
 \begin{align*}
 V_f = V_i +2*a*d
 \end{align*}
-$V_f$ = maksimal fart i sving, $V_i$ = nuværende fart, a = deceleration(\(22.06m/s^2\)) og d = bremselængden. \\
+$V_f$ = maksimal fart i sving, $V_i$ = nuværende fart, a = deceleration(\(22,06m/s^2\)) og d = bremselængden. \\
 
 Formlen benytter den maksimale teoretiske svinghastighed, bilens hastighed, deceleration og bremselængden. Da disse værdier ofte er kommatal, benyttes en lookup-tabel, som indeholder bremselængden som funktion af periodetiden fra omdrejningssensoren. \\
 
-Lookup-tabellen i bilag \ref{lookup} tager udgangspunkt i en bestemt periodetid. Periodetiden benyttes til at udregnes hastigheden i $m/s$ og sættes ind i ovenstående formel. Konstanten A, er fundet ud fra et eksperiment, hvor bilen filmes mens den bremser. Videoen analyseres vha. programmet LoggerPro, som kan måle hastigheden og accelerationen. Ud fra disse værdier kan bremselængden findes. Denne måles i pulser, hvor det vides at 1 puls er lig med 0.005m. Dette er udregnet ud fra bilens gearing og hjulenes omkreds. Se afsnit \ref{beregn_gear} for beregninger.\\
+Lookup-tabellen i bilag \ref{lookup} tager udgangspunkt i en bestemt periodetid. Periodetiden benyttes til at udregnes hastigheden i $m/s$ og sættes ind i ovenstående formel. Konstanten A, er fundet ud fra et eksperiment, hvor bilen filmes mens den bremser. Videoen analyseres vha. programmet LoggerPro, som kan måle hastigheden og accelerationen. Ud fra disse værdier kan bremselængden findes. Denne måles i pulser, hvor det vides at en puls er lig med 0,005m. Dette er udregnet ud fra bilens gearing og hjulenes omkreds. Se afsnit \ref{beregn_gear} for beregninger.\\
 
 Efter bilen har mappet banen benyttes lookup-tabellen til at finde det optimale bremsepunkt. Det gøres ved at tjekke omdrejningssensoren og sammenligne dennes værdi med værdierne i lookup-tabellen, for at finde bremselængden. Når afstanden til svinget er lig med bremselængde begynder bilen at bremse. Dette gøres ved at køre motoren baglæns indtil periodetiden i omdrejningssensoren er lig med den maksimale teoretiske periodetid for svinget. \\
 

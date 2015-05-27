@@ -13,7 +13,7 @@
 %====== Indledning ====================================================
 %======================================================================
 \section{Indledning}
-Scalextric er en stor producent af elektriske biler, skinner og fjernbetjeninger dertil. Det er populært blandt især børn, at bygge deres egen racerbane og køre om kap. Projektets store udfordring er at modificere en af Scalextrics biler og udstyre dem med sensorer, således at den selv kan køre og justere sin hastighed på en hensigtsmæssig måde.
+Scalextric er en stor producent af elektriske biler, skinner og fjernbetjeninger dertil. Det er populært blandt især børn, at bygge deres egen racerbane og køre om kap. Projektets store udfordring er at modificere en Scalextrics bil og udstyre den med sensorer, således at den selv kan køre og justere sin hastighed på en hensigtsmæssig måde.
 
 \subsection{Projektbeskrivelse}
 \subsubsection{Problemanalyse}
@@ -53,11 +53,11 @@ Vores projekt kan derfor fortolkes til at programmere en microcontroller til at 
 
 \subsubsection{Konkurrenceregler}
 \label{kon_regler}
-Den 29. maj 2015 afholdes Pole Position konkurrencen. Her vinder det hold, som har den hurtigste omgangstid. Der er visse krav til bilen for at gøre konkurrencen fair. Bilen skal kunne køre af sig selv og skal således starte når den sættes på banen. Det skal dog være muligt at sætte en hastighed eller stoppe bilen vha. Bluetooth. Denne kommunikation skal overholde en protokol, som senere vil blive uddybet. Selve banen består kun af rene højre eller venstre sving, dvs. at der minimum vil være en lige skinne mellem to sving. Bilens karosseri, dæk og undervogn må ikke ændres. Det er dog tilladt at lave mindre ændringer for at gøre plads til sensorer og lignende. Der må ikke monteres permamagneter på bilen. Magneten som er monteret på bilen fra fabrikken må dog blive siddende. Der skal anvendes en elektromagnetisk sensor og/eller -aktuator i projektet. Dette kan f.eks. være i form af en elektromagnet. 
+Den 29. maj 2015 afholdes Pole Position konkurrencen. Her vinder det hold, som har den hurtigste omgangstid. Der er visse krav til bilen for at gøre konkurrencen fair. Bilen skal kunne køre af sig selv og skal således starte når den sættes på banen. Det skal dog være muligt at sætte en hastighed eller stoppe bilen vha. Bluetooth. Denne kommunikation skal overholde en protokol, som senere vil blive uddybet. Selve banen består kun af rene højre eller venstre sving, dvs. at der minimum vil være en lige skinne mellem to sving. Bilens karosseri, dæk og undervogn må ikke ændres. Det er dog tilladt at lave mindre ændringer for at gøre plads til sensorer og lignende. Der må ikke monteres permanentmagneter på bilen. Magneten som er monteret på bilen fra fabrikken må dog blive siddende. Der skal anvendes en elektromagnetisk sensor og/eller -aktuator i projektet. Dette kan f.eks. være i form af en elektromagnet. 
 
 
 \subsection{Rapportstruktur}
-Projektet består af flere dele, hvor microcontrolleren er i centrum. Delene har forskellige realationer til microcontrolleren som \ref{Strategi} illustrerer.\\
+Projektet består af flere dele, hvor microcontrolleren er i centrum. Delene har forskellige relationer til microcontrolleren som figur \ref{Strategi} illustrerer.\\
 
 \begin{figure}[h!]
 \center
@@ -66,5 +66,5 @@ Projektet består af flere dele, hvor microcontrolleren er i centrum. Delene har
 \label{Strategi}
 \end{figure}
 
-Microntrolleren styre forsyningen til motoren. Omdrejningssensor tæller motorens omdrejninger og sender informationer tilbage til microcontrolleren. Svingsensor sender informationer om til processoren om sving. Stregsensoren detektere startlinjen og informere controlleren om dette. Microcontrolleren styrer forsyningen til elektromagneten. Derudover er der en tovejs kommunikation mellem bluetooth-modulet og microcontrolleren. \\
-Udover at blokkene til sammen beskriver produktet, giver dette også en oversigt over rapportens opbygning. De enkelte dele udgør hovedafsnittene i rapporten. Vha. dette kort kan læseren nemt navigere rundt i rapporten uden at miste overblik. 
+Microcontrolleren styrer forsyningen til motoren. Omdrejningssensoren tæller motorens omdrejninger og sender informationer tilbage til microcontrolleren. Svingsensoren sender informationer om svinget til microcontrolleren. Stregsensoren detekterer startlinjen og informerer microcontrolleren om dette. Microcontrolleren styrer forsyningen til elektromagneten. Derudover er der en tovejs kommunikation mellem Bluetooth-modulet og microcontrolleren. \\
+Udover at blokkene tilsammen beskriver produktet, giver dette også en oversigt over rapportens opbygning. De enkelte dele udgør hovedafsnittene i rapporten. Vha. dette kort kan læseren nemt navigere rundt i rapporten uden at miste overblik. 

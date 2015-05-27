@@ -1,10 +1,10 @@
 \section{Omdrejningssensor - Måling af farten}
 \label{fartmål}
-I dette afsnit beskrives hvordan en omdrejningssensor udnyttes til at beregne hastigheden bilen kører med. Der vil både blive beskrevet hardwaren til sensoren samt hvordan den softwaremæssigt bruger sensoren. Farten bliver brugt til at mappe banen samt kører med konstant hastighed, som er beskrevet i afsnit \ref{mapning} og \ref{sving} \\
+I dette afsnit beskrives hvordan en omdrejningssensor udnyttes til at beregne hastigheden bilen kører med. Der vil både blive beskrevet hardwaren til sensoren, samt hvordan den softwaremæssigt bruger sensoren. Farten bliver brugt til beregne bremselængden, og køre med konstant hastighed, som er beskrevet i afsnit \ref{bremse} og \ref{sving}. \\
 
 \subsection{Fart Hardware - TCST1230}
 \label{fartmål_hardware}
-Vi benytter TCST1230, som er en optisk sensor, til at lave en fotogate. Sensoren består af en fotocelle og en vifte med 1 blad på. Hjulet med vifterne sidder på motorens aksle og hver gang akslen drejer en omgang vil den bryde fotosensorens lys 1 gang. Hver gang lyset brydes fås en puls fra fotosensoren, som sendes videre til microcontrolleren. Dette er illustreret i figur \ref{wheelspeed3D}.
+Vi benytter TCST1230, som er en transmitiv optisk sensor, til at lave en fotogate. Sensoren består af en fotocelle og en vifte med et blad på. Hjulet med vifterne sidder på motorens aksle og hver gang akslen drejer en omgang vil den bryde fotosensorens lys en gang. Hver gang lyset brydes fås en puls fra fotosensoren, som sendes videre til microcontrolleren. Dette er illustreret i figur \ref{wheelspeed3D}.
 
 \begin{figure}[h!]
 \center
@@ -18,7 +18,7 @@ Se afsnit \ref{beregn_gear} for udregningen af gearingen. \\
 Fire vifter giver en opløsning der er fire gange bedre, end kun at have en vifte. \\
 For bedre opløsning kunne der sættes flere vifter på, men kommer der for mange vifter på, vil det dog blive svært for sensoren at aflæse vifterne. Dette skyldes at mellemrummet til sidst vil blive meget småt. Jo flere vifter der tilføjes, jo sværere bliver det også at bygge ringen med vifterne. \\
 
-I dette tilfælde anvendes en ring med fire vifter da det kunne laves forholdsvis let, og det giver en opløsning, der er høj nok til hvad der ønskes. Ved blot 1 vifte kørte hjulet 2cm per omdrejning. Da hjulet kører 0,2381 omgange pr. motoromdrejning så kan længden bilen kører mellem hver puls udregnes ved at multiplicere hjulomdrejninger med hjulets omkreds:
+I dette tilfælde anvendes en ring med fire vifter da det kunne laves forholdsvis let, og det giver en opløsning, der er høj nok til hvad der ønskes. Ved blot en vifte kørte hjulet 2cm per omdrejning. Da hjulet kører 0,2381 omgange pr. motoromdrejning, kan længden bilen kører, mellem hver puls udregnes ved at multiplicere hjulomdrejninger med hjulets omkreds:
 \begin{align*}
 0,2381*8,5cm = 2,02 cm
 \end{align*}
@@ -26,7 +26,7 @@ Dette er ikke ret præcist da længden og farten kun af aflæses i intervaller a
 \begin{align*}
 (\frac{0,2381}{4})* 8,5cm = 0,51cm
 \end{align*}
-Dette er markant bedre da den nu kun kører 0,51cm før den får en puls og udregner længde og hastighed. Så der fås flere mindre intervaller der kan tjekkes og reageres på. \\ 
+Dette er markant bedre da den nu kun kører 0,51cm før den får en puls hvor den udregner længde og hastighed. Så der fås flere mindre intervaller der kan tjekkes og reageres på. \\ 
 
 Som det kan ses på tegningen af kredsløbet i figur \ref{wheelspeedTegning} er der sat nogle modstande og en kondensator på sensorens kredsløb. \\
 
@@ -37,7 +37,7 @@ Som det kan ses på tegningen af kredsløbet i figur \ref{wheelspeedTegning} er 
 \label{wheelspeedTegning}
 \end{figure}
 
-Modstanden R3 i figur \ref{wheelspeedTegning} er der for at strømmen over dioden D2 ikke bliver større end dioden kan tåle. Dioden kan kun klare 30mA ifølge databladet\footnote{Se udsnit af datablad for TCST1230 i bilag \ref{TCST1230}}.\\
+Modstanden R3 i figur \ref{wheelspeedTegning} er der for at strømmen gennem dioden, D2, ikke bliver større end dioden kan tåle. Dioden kan kun klare 30mA ifølge databladet\footnote{Se udsnit af datablad for TCST1230 i bilag \ref{TCST1230}}.\\
 
 Modstanden R4 virker som en pulldown\footnote{Se ordliste \ref{ordliste}} modstand der sørger for at holde signalet lavt, når fototransistoren ikke modtager lys. \\
 
@@ -54,7 +54,7 @@ Interruptet benyttes sammen med Timer0 til at finde farten. Timer0 er sat op så
 \frac{256}{16 000 000Hz} = 0,000016 s = 16 \mu s 
 \end{align*}
 
-Dette bruges for at finde periodetiden, som benyttes til at udtrykke farten. Et overflow vil kun forekomme hvis noget går galt og bilen står helt stille, eller kører under 1.2\(m/s\). Hvis der er overflow i Timer0, kaldes et andet interrupt, der sætter en konstant hastighed. \\
+Dette bruges til at finde periodetiden, som benyttes til at udtrykke farten. Et overflow vil kun forekomme hvis noget går galt og bilen står helt stille, eller kører under 1,2\(m/s\). Hvis der er overflow i Timer0, kaldes et andet interrupt, der sætter en konstant hastighed. \\
 
 Flowdiagrammet i figur \ref{fart_chart} viser processen hver gang interruptet bliver kaldt. Hvilket sker hver gang sensoren sender en puls. \\
 
